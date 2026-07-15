@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("24s-nav") === "1") {
+          document.documentElement.classList.add("nav-incoming");
+          sessionStorage.removeItem("24s-nav");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>24stills — Story-Driven Video Production Studio | Brooklyn, NY</title>
+  <meta name="description" content="24stills is a NYC-based video production studio specializing in corporate filmmaking for ambitious brands and organizations. Founded in Vienna, located in Brooklyn, New York." />
+  <link rel="canonical" href="https://www.24stills.net/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="24stills — Story-Driven Video Production Studio" />
+  <meta property="og:description" content="Corporate filmmaking for ambitious brands. From creative direction and filming to post-production." />
+  <meta property="og:image" content="assets/img/poster-hero.jpg" />
+  <link rel="icon" type="image/png" href="assets/logos/24stills-submark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "24stills LLC",
+    "url": "https://www.24stills.net",
+    "email": "hello@24stills.net",
+    "description": "Boutique video production studio specializing in corporate filmmaking.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Brooklyn", "addressRegion": "NY", "addressCountry": "US" },
+    "sameAs": ["https://www.instagram.com/24stills_film", "https://vimeo.com/24stills"]
+  }
+  </script>
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- preloader: camera zoom-through -->
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader__frame">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="preloader__stage">
+      <span class="preloader__rec"><span class="dot"></span>REC</span>
+      <img class="preloader__mark" src="assets/logos/24stills-submark.png" alt="" />
+      <span class="preloader__count">000 %</span>
+    </div>
+  </div>
+
+  <!-- page transition — cinema-shutter bars, reused for work-item overlays -->
+  <div class="bars" aria-hidden="true">
+    <div class="bars__top"></div>
+    <div class="bars__bottom"></div>
+    <img class="bars__mark" src="assets/logos/24stills-submark.png" alt="" />
+  </div>
+
+  <!-- header -->
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="24stills — home">
+      <img src="assets/logos/24stills-logo.png" alt="24stills" />
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="work.html">Work</a>
+      <a href="about.html">Who We Are</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="menu-btn" aria-label="Open menu">
+      <span class="menu-btn__label">Menu</span>
+      <span class="menu-btn__icon"><span></span><span></span><span></span></span>
+    </button>
+  </header>
+
+  <!-- fullscreen menu -->
+  <div class="menu-overlay">
+    <a class="menu-link" href="work.html"><span class="idx">01</span>Work</a>
+    <a class="menu-link" href="about.html"><span class="idx">02</span>Who We Are</a>
+    <a class="menu-link" href="index.html#services"><span class="idx">03</span>Services</a>
+    <a class="menu-link" href="index.html#contact"><span class="idx">04</span>Contact</a>
+    <div class="menu-foot">
+      <span>Brooklyn, NY</span>
+      <span>hello@24stills.net</span>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- 01 · SHOWREEL HERO -->
+    <section class="hero">
+      <video autoplay muted loop playsinline poster="assets/img/poster-hero.jpg" aria-hidden="true">
+        <source src="assets/video/hero-loop.mp4" type="video/mp4" />
+      </video>
+      <div class="hero__inner">
+        <h1 class="hero__title display">
+          <span class="line"><span>Story-Driven</span></span>
+          <span class="line"><span>Content</span></span>
+        </h1>
+        <div class="hero__meta">
+          <span class="mono">Showreel — 2026</span>
+          <span class="mono">Video Production Studio</span>
+          <a class="hero__scroll mono" href="#intro">Scroll <span class="arrow">↓</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ticker -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>Corporate Filmmaking</span><span>·</span><span>Brand Documentaries</span><span>·</span><span>Event Films</span><span>·</span><span>Commercials</span><span>·</span><span>Brooklyn NY</span><span>·</span>
+        <span>Corporate Filmmaking</span><span>·</span><span>Brand Documentaries</span><span>·</span><span>Event Films</span><span>·</span><span>Commercials</span><span>·</span><span>Brooklyn NY</span><span>·</span>
+      </div>
+    </div>
+
+    <!-- 02 · INTRO STATEMENT -->
+    <section class="section" id="intro">
+      <span class="eyebrow">01 // The Studio</span>
+      <h2 class="statement" data-reveal="words" data-accent="24stills|ambitious" style="margin-top:1.5rem;">
+        24stills is a NYC based video production studio, specializing in corporate filmmaking for ambitious brands and organizations.
+      </h2>
+    </section>
+
+    <!-- 03 · TRUSTED BY -->
+    <section class="trusted" aria-label="Clients">
+      <span class="eyebrow">02 // Trusted By</span>
+      <div class="logo-marquee">
+        <div class="logo-marquee__track">
+          <span class="wordmark">Tag Heuer</span>
+          <img src="assets/logos/client-violife.png" alt="Violife" />
+          <span class="wordmark">DZ Bank</span>
+          <img src="assets/logos/client-huebner.png" alt="Hübner" />
+          <span class="wordmark">Horváth</span>
+          <img src="assets/logos/client-roehm.png" alt="Röhm" />
+          <img src="assets/logos/client-met.png" alt="The Metropolitan Museum of Art" />
+          <img src="assets/logos/client-rockhall.png" alt="Rock &amp; Roll Hall of Fame" />
+          <!-- duplicate for seamless loop -->
+          <span class="wordmark">Tag Heuer</span>
+          <img src="assets/logos/client-violife.png" alt="" />
+          <span class="wordmark">DZ Bank</span>
+          <img src="assets/logos/client-huebner.png" alt="" />
+          <span class="wordmark">Horváth</span>
+          <img src="assets/logos/client-roehm.png" alt="" />
+          <img src="assets/logos/client-met.png" alt="" />
+          <img src="assets/logos/client-rockhall.png" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · MANIFESTO -->
+    <section class="section section--ink">
+      <span class="eyebrow">03 // What We Do</span>
+      <h2 class="statement" data-reveal="lines" data-accent="move|people" style="margin-top:1.5rem;">
+        We create story-driven films for and with brands that resonate with their audience — crafting films that actually move people.
+      </h2>
+      <p class="body-note">
+        From creative direction and filming to post-production — we work with organizations
+        across every step of the process. Founded in Vienna, located in Brooklyn, New York.
+      </p>
+    </section>
+
+    <!-- 05 · WORK -->
+    <section class="section" id="work">
+      <div class="section-head section-head--sticky">
+        <h2 class="display" data-drift="left">Work</h2>
+        <span class="mono">Selected — 4 / 7</span>
+      </div>
+
+      <div class="work-list work-list--featured">
+
+        <button class="work-card" data-project="dzbank" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-dzbank.jpg" alt="DZ Bank — 50 Years DZ Bank New York" loading="lazy" />
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Content Format // Image Film</span>
+            <span class="mono">Client // DZ Bank</span>
+          </div>
+          <h3 class="work-card__title display">50 Years DZ Bank New York</h3>
+        </button>
+
+        <button class="work-card" data-project="horvath" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-horvath.jpg" alt="Horváth — High-Performance Leadership Event" loading="lazy" />
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Content Format // Event Film</span>
+            <span class="mono">Client // Horváth</span>
+          </div>
+          <h3 class="work-card__title display">High-Performance Leadership Event</h3>
+        </button>
+
+        <button class="work-card" data-project="violife" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <div class="work-card__tile">
+              <img src="assets/logos/client-violife.png" alt="Violife — Undairy the Craving" loading="lazy" />
+            </div>
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Content Format // Brand Experience</span>
+            <span class="mono">Client // Violife</span>
+          </div>
+          <h3 class="work-card__title display">Undairy the Craving</h3>
+        </button>
+
+        <button class="work-card" data-project="tagheuer" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-tagheuer.jpg" alt="TAG Heuer — One Night in NYC" loading="lazy" />
+            <video muted loop playsinline preload="none" src="assets/video/loop-tagheuer.mp4" aria-hidden="true"></video>
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Content Format // Brand Documentary</span>
+            <span class="mono">Client // TAG Heuer</span>
+          </div>
+          <h3 class="work-card__title display">One Night in NYC</h3>
+        </button>
+
+      </div>
+
+      <a class="view-all" href="work.html">View All Work <span aria-hidden="true">→</span></a>
+    </section>
+
+    <!-- 06 · SERVICES -->
+    <section class="section section--ink" id="services">
+      <div class="section-head">
+        <h2 class="display" data-drift="right">Services</h2>
+        <span class="mono">Full Service — A to Z</span>
+      </div>
+
+      <div class="svc">
+
+        <div class="svc__row">
+          <button class="svc__head" aria-expanded="false">
+            <span class="svc__idx">01</span>
+            <span class="svc__name display">Creative</span>
+            <span class="svc__toggle">+</span>
+          </button>
+          <div class="svc__body">
+            <div class="svc__body-inner">
+              <ul class="svc__list">
+                <li>Concept &amp; Production</li>
+                <li>Scripting &amp; Storytelling</li>
+                <li>Campaign Development</li>
+                <li>Content Strategy Consulting</li>
+              </ul>
+              <div class="svc__media"><img src="assets/img/thumb-tagheuer.jpg" alt="Creative — on set for TAG Heuer" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="svc__row">
+          <button class="svc__head" aria-expanded="false">
+            <span class="svc__idx">02</span>
+            <span class="svc__name display">Production</span>
+            <span class="svc__toggle">+</span>
+          </button>
+          <div class="svc__body">
+            <div class="svc__body-inner">
+              <ul class="svc__list">
+                <li>Branded Content Films</li>
+                <li>Event Coverage</li>
+                <li>Panel &amp; Conference Filming</li>
+              </ul>
+              <div class="svc__media"><img src="assets/img/thumb-horvath.jpg" alt="Production — event coverage for Horváth" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="svc__row">
+          <button class="svc__head" aria-expanded="false">
+            <span class="svc__idx">03</span>
+            <span class="svc__name display">Post-Production</span>
+            <span class="svc__toggle">+</span>
+          </button>
+          <div class="svc__body">
+            <div class="svc__body-inner">
+              <ul class="svc__list">
+                <li>Editing</li>
+                <li>Motion Graphics</li>
+                <li>Color &amp; Audio</li>
+                <li>Delivery for TV, Social &amp; Web</li>
+              </ul>
+              <div class="svc__media"><img src="assets/img/thumb-huebner.jpg" alt="Post-production — edit suite" loading="lazy" /></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 07 · INTERSTITIAL BAND -->
+    <section class="band band--zoom">
+      <h2 class="statement" data-reveal="zoom" data-accent="European|American">
+        We bring a European sensibility to American storytelling.
+      </h2>
+    </section>
+
+    <!-- 08 · CONTACT -->
+    <section class="contact" id="contact">
+      <img class="contact__bg" src="assets/img/bg-contact.jpg" alt="" aria-hidden="true" />
+      <span class="eyebrow">Say Hello!</span>
+      <a class="contact__email" href="mailto:hello@24stills.net">hello@24stills.net</a>
+      <p class="place">Brooklyn — NY</p>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="col-left">
+      <p>24stills LLC.<br />Brooklyn, NY</p>
+      <a href="mailto:hello@24stills.net">hello@24stills.net</a>
+      <div class="social">
+        <a href="https://www.instagram.com/24stills_film" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="col-right">
+      <img class="brandmark" src="assets/logos/24stills-logo.png" alt="24stills" />
+      <a href="work.html">Work</a>
+      <a href="about.html">About Us</a>
+      <a href="index.html#services">Services</a>
+    </div>
+    <div class="legal">
+      <span>© <span data-year>2026</span> 24stills, LLC</span>
+      <span>Story-Driven Content</span>
+    </div>
+  </footer>
+
+  <!-- PROJECT OVERLAY ("netflix effect") -->
+  <div class="project-overlay" role="dialog" aria-modal="true" aria-label="Project detail">
+    <div class="project-overlay__media">
+      <button class="project-overlay__close">Close ✕</button>
+    </div>
+    <div class="project-overlay__bar">
+      <div>
+        <span class="project-overlay__brand mono"></span>
+        <h3 class="project-overlay__title display"></h3>
+      </div>
+      <p class="project-overlay__desc"></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

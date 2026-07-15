@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("24s-nav") === "1") {
+          document.documentElement.classList.add("nav-incoming");
+          sessionStorage.removeItem("24s-nav");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weddings — 24stills</title>
+  <meta name="description" content="Wedding films by 24stills — cinematic highlight films, told with the same story-driven craft." />
+  <!-- intentionally unlisted: not linked from main navigation -->
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="assets/logos/24stills-submark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="bars" aria-hidden="true">
+    <div class="bars__top"></div>
+    <div class="bars__bottom"></div>
+    <img class="bars__mark" src="assets/logos/24stills-submark.png" alt="" />
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="24stills — home">
+      <img src="assets/logos/24stills-logo.png" alt="24stills" />
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="menu-btn" aria-label="Open menu" style="visibility:hidden;">
+      <span class="menu-btn__label">Menu</span>
+      <span class="menu-btn__icon"><span></span><span></span><span></span></span>
+    </button>
+  </header>
+
+  <main>
+
+    <!-- hero -->
+    <section class="hero" style="height: 88svh;">
+      <img class="hero-poster" src="assets/img/thumb-wedding.jpg" alt="Wedding highlight film — Sara + Justin" />
+      <div class="hero__inner">
+        <h1 class="hero__title display">
+          <span class="line"><span>Weddings</span></span>
+        </h1>
+        <div class="hero__meta">
+          <span class="mono">Highlight Films</span>
+          <span class="mono">Story-Driven — Always</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <span class="eyebrow">01 // Your Day, As A Film</span>
+      <h2 class="statement" data-reveal="tracking" data-accent="once" style="margin-top:1.5rem;">
+        Some stories only happen once. We film yours the way we film everything — with intention, honesty and craft.
+      </h2>
+      <p class="body-note">
+        Cinematic wedding highlight films, shot unobtrusively and edited to feel like you —
+        not like a template.
+      </p>
+
+      <div class="wed-detail reveal-media">
+        <img src="assets/img/thumb-wedding.jpg" alt="Sara and Justin, Brooklyn wedding" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- what's included -->
+    <section class="section section--ink">
+      <div class="section-head">
+        <h2 class="display">Included</h2>
+        <span class="mono">Every Package</span>
+      </div>
+      <ul class="wed-included">
+        <li><span>//</span> Full-day coverage, one or two filmmakers</li>
+        <li><span>//</span> Cinematic highlight film, 3–5 minutes</li>
+        <li><span>//</span> Sound-mixed, licensed score</li>
+        <li><span>//</span> Color graded to match the day's light</li>
+        <li><span>//</span> Delivered in 6–8 weeks, private online gallery</li>
+      </ul>
+      <p class="body-note">Exact scope varies by day length and venue — confirmed after your consult.</p>
+    </section>
+
+    <!-- process -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="display">Process</h2>
+        <span class="mono">Inquiry — Delivery</span>
+      </div>
+      <div class="wed-process">
+        <div class="wed-process__step reveal-up">
+          <span class="idx">01</span>
+          <h3>Inquire</h3>
+          <p>Tell us about your day using the form below.</p>
+        </div>
+        <div class="wed-process__step reveal-up">
+          <span class="idx">02</span>
+          <h3>Consult</h3>
+          <p>A short call to talk timeline, venue and coverage.</p>
+        </div>
+        <div class="wed-process__step reveal-up">
+          <span class="idx">03</span>
+          <h3>Film</h3>
+          <p>We shoot unobtrusively, all day, start to finish.</p>
+        </div>
+        <div class="wed-process__step reveal-up">
+          <span class="idx">04</span>
+          <h3>Edit</h3>
+          <p>Cut, colored and scored in the studio.</p>
+        </div>
+        <div class="wed-process__step reveal-up">
+          <span class="idx">05</span>
+          <h3>Deliver</h3>
+          <p>Your film, ready to watch and share.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- inquiry form -->
+    <section class="section section--ink" id="inquire">
+      <div class="section-head">
+        <h2 class="display">Inquire</h2>
+        <span class="mono">Tell Us Everything</span>
+      </div>
+
+      <form class="wed-form" action="mailto:hello@24stills.net" method="post" enctype="text/plain">
+        <div>
+          <label for="firstname">First Name</label>
+          <input id="firstname" name="firstname" type="text" required autocomplete="given-name" />
+        </div>
+        <div>
+          <label for="lastname">Name</label>
+          <input id="lastname" name="lastname" type="text" required autocomplete="family-name" />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div>
+          <label for="location">Location</label>
+          <input id="location" name="location" type="text" placeholder="City / Venue" />
+        </div>
+        <div>
+          <label for="date">Date</label>
+          <input id="date" name="date" type="date" />
+        </div>
+        <div>
+          <label for="found">How did you find us?</label>
+          <select id="found" name="found">
+            <option value="">Please choose…</option>
+            <option>Instagram</option>
+            <option>Google</option>
+            <option>Friends &amp; Family</option>
+            <option>Vendor Recommendation</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="full">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" placeholder="Tell us about your day…"></textarea>
+        </div>
+        <div class="full">
+          <button type="submit">Send Inquiry →</button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="col-left">
+      <p>24stills LLC.<br />Brooklyn, NY</p>
+      <a href="mailto:hello@24stills.net">hello@24stills.net</a>
+    </div>
+    <div class="col-right">
+      <img class="brandmark" src="assets/logos/24stills-logo.png" alt="24stills" />
+    </div>
+    <div class="legal">
+      <span>© <span data-year>2026</span> 24stills, LLC</span>
+      <span>Story-Driven Content</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

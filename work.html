@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("24s-nav") === "1") {
+          document.documentElement.classList.add("nav-incoming");
+          sessionStorage.removeItem("24s-nav");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work — 24stills | Corporate Films, Brand Documentaries &amp; Event Films</title>
+  <meta name="description" content="Selected work by 24stills: image films, brand documentaries, event films and commercials for TAG Heuer, DZ Bank, Horváth, Violife, Hübner, Röhm and more." />
+  <link rel="canonical" href="https://www.24stills.net/work" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Work — 24stills" />
+  <meta property="og:image" content="assets/img/thumb-tagheuer.jpg" />
+  <link rel="icon" type="image/png" href="assets/logos/24stills-submark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="bars" aria-hidden="true">
+    <div class="bars__top"></div>
+    <div class="bars__bottom"></div>
+    <img class="bars__mark" src="assets/logos/24stills-submark.png" alt="" />
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="24stills — home">
+      <img src="assets/logos/24stills-logo.png" alt="24stills" />
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="work.html" aria-current="page">Work</a>
+      <a href="about.html">Who We Are</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="menu-btn" aria-label="Open menu">
+      <span class="menu-btn__label">Menu</span>
+      <span class="menu-btn__icon"><span></span><span></span><span></span></span>
+    </button>
+  </header>
+
+  <div class="menu-overlay">
+    <a class="menu-link" href="work.html"><span class="idx">01</span>Work</a>
+    <a class="menu-link" href="about.html"><span class="idx">02</span>Who We Are</a>
+    <a class="menu-link" href="index.html#services"><span class="idx">03</span>Services</a>
+    <a class="menu-link" href="index.html#contact"><span class="idx">04</span>Contact</a>
+    <div class="menu-foot">
+      <span>Brooklyn, NY</span>
+      <span>hello@24stills.net</span>
+    </div>
+  </div>
+
+  <main>
+
+    <section class="section" style="padding-top: calc(var(--header-h) + clamp(3rem, 8vw, 6rem));">
+      <div class="section-head section-head--sticky">
+        <h1 class="display">Work</h1>
+        <span class="mono">All Projects — 07</span>
+      </div>
+
+      <div class="work-grid">
+
+        <button class="work-card" data-project="tagheuer" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-tagheuer.jpg" alt="TAG Heuer — One Night in NYC" loading="lazy" />
+            <video muted loop playsinline preload="none" src="assets/video/loop-tagheuer.mp4" aria-hidden="true"></video>
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Brand Documentary</span>
+            <span class="mono">TAG Heuer</span>
+          </div>
+          <h2 class="work-card__title display">One Night in NYC</h2>
+        </button>
+
+        <button class="work-card" data-project="dzbank" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-dzbank.jpg" alt="DZ Bank — 50 Years DZ Bank New York" loading="lazy" />
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Image Film</span>
+            <span class="mono">DZ Bank</span>
+          </div>
+          <h2 class="work-card__title display">50 Years DZ Bank New York</h2>
+        </button>
+
+        <button class="work-card" data-project="horvath" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-horvath.jpg" alt="Horváth — High-Performance Leadership Event" loading="lazy" />
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Event Film</span>
+            <span class="mono">Horváth</span>
+          </div>
+          <h2 class="work-card__title display">High-Performance Leadership Event</h2>
+        </button>
+
+        <button class="work-card" data-project="violife" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <div class="work-card__tile">
+              <img src="assets/logos/client-violife.png" alt="Violife — Undairy the Craving" loading="lazy" />
+            </div>
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Brand Experience</span>
+            <span class="mono">Violife</span>
+          </div>
+          <h2 class="work-card__title display">Undairy the Craving</h2>
+        </button>
+
+        <button class="work-card" data-project="huebner" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-huebner.jpg" alt="Hübner — Process Harmonization" loading="lazy" />
+            <video muted loop playsinline preload="none" src="assets/video/loop-huebner.mp4" aria-hidden="true"></video>
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Corporate Documentary</span>
+            <span class="mono">Hübner</span>
+          </div>
+          <h2 class="work-card__title display">Process Harmonization</h2>
+        </button>
+
+        <button class="work-card" data-project="roehm" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-roehm.jpg" alt="Röhm — Customer Project" loading="lazy" />
+            <video muted loop playsinline preload="none" src="assets/video/loop-roehm.mp4" aria-hidden="true"></video>
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Corporate Documentary</span>
+            <span class="mono">Röhm</span>
+          </div>
+          <h2 class="work-card__title display">Customer Project: Röhm</h2>
+        </button>
+
+        <button class="work-card" data-project="cycling" aria-haspopup="dialog">
+          <div class="work-card__media reveal-media">
+            <img src="assets/img/thumb-cycling.jpg" alt="Passion Cycling — Commercial" loading="lazy" />
+            <span class="work-card__hint">Watch ↗</span>
+          </div>
+          <div class="work-card__meta">
+            <span class="mono">Commercial</span>
+            <span class="mono">Passion Cycling</span>
+          </div>
+          <h2 class="work-card__title display">Passion Cycling</h2>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <img class="contact__bg" src="assets/img/bg-contact.jpg" alt="" aria-hidden="true" />
+      <span class="eyebrow">Say Hello!</span>
+      <a class="contact__email" href="mailto:hello@24stills.net">hello@24stills.net</a>
+      <p class="place">Brooklyn — NY</p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="col-left">
+      <p>24stills LLC.<br />Brooklyn, NY</p>
+      <a href="mailto:hello@24stills.net">hello@24stills.net</a>
+      <div class="social">
+        <a href="https://www.instagram.com/24stills_film" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+    <div class="col-right">
+      <img class="brandmark" src="assets/logos/24stills-logo.png" alt="24stills" />
+      <a href="work.html">Work</a>
+      <a href="about.html">About Us</a>
+      <a href="index.html#services">Services</a>
+    </div>
+    <div class="legal">
+      <span>© <span data-year>2026</span> 24stills, LLC</span>
+      <span>Story-Driven Content</span>
+    </div>
+  </footer>
+
+  <div class="project-overlay" role="dialog" aria-modal="true" aria-label="Project detail">
+    <div class="project-overlay__media">
+      <button class="project-overlay__close">Close ✕</button>
+    </div>
+    <div class="project-overlay__bar">
+      <div>
+        <span class="project-overlay__brand mono"></span>
+        <h3 class="project-overlay__title display"></h3>
+      </div>
+      <p class="project-overlay__desc"></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

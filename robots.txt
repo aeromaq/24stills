@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /weddings.html
+
+Sitemap: https://www.24stills.net/sitemap.xml
