@@ -599,46 +599,55 @@ function buildOverlayMedia(mediaBox, data) {
   }
 }
 
+let overlayAnimating = false;
+
 function openProject(key) {
+  if (overlayAnimating) return;
   const data = PROJECTS[key];
   if (!data) return;
 
   const overlay = document.querySelector(".project-overlay");
-  if (!overlay) return;
+  if (!overlay || overlay.classList.contains("open")) return;
   const mediaBox = overlay.querySelector(".project-overlay__media");
   const brand = overlay.querySelector(".project-overlay__brand");
   const title = overlay.querySelector(".project-overlay__title");
   const desc = overlay.querySelector(".project-overlay__desc");
   const bar = overlay.querySelector(".project-overlay__bar");
 
-  buildOverlayMedia(mediaBox, data);
-  brand.textContent = `${data.brand} // ${data.format}`;
-  title.textContent = data.title;
-  desc.textContent = data.desc;
-
-  overlay.classList.remove("is-playing");
-  overlay.classList.add("open");
-  document.body.style.overflow = "hidden";
-  gsap.set(bar, { opacity: 0, yPercent: 24 });
-
+  // netflix sequence: bars CLOSE over the page first, the project content
+  // swaps in while the screen is fully covered, then the bars part to
+  // reveal it — the overlay must never pop in before the bars have met.
+  overlayAnimating = true;
   const d1 = reducedMotion ? 0.01 : 0.42;
   const d2 = reducedMotion ? 0.01 : 0.55;
   gsap
-    .timeline()
-    .add(coverBars({ duration: d1 }))
-    .add(uncoverBars({ duration: d2 }), "+=0.06")
+    .timeline({ onComplete: () => (overlayAnimating = false) })
+    .add(coverBars({ duration: d1, withMark: true }))
+    .add(() => {
+      buildOverlayMedia(mediaBox, data);
+      brand.textContent = `${data.brand} // ${data.format}`;
+      title.textContent = data.title;
+      desc.textContent = data.desc;
+      overlay.classList.remove("is-playing");
+      overlay.classList.add("open");
+      document.body.style.overflow = "hidden";
+      gsap.set(bar, { opacity: 0, yPercent: 24 });
+    })
+    .add(uncoverBars({ duration: d2, withMark: true }), "+=0.12")
     .fromTo(bar, { opacity: 0, yPercent: 24 }, { opacity: 1, yPercent: 0, duration: 0.4, ease: "power3.out" }, "-=0.3");
 }
 
 function closeProject() {
+  if (overlayAnimating) return;
   const overlay = document.querySelector(".project-overlay");
   if (!overlay || !overlay.classList.contains("open")) return;
   const bar = overlay.querySelector(".project-overlay__bar");
   const d1 = reducedMotion ? 0.01 : 0.42;
   const d2 = reducedMotion ? 0.01 : 0.55;
 
+  overlayAnimating = true;
   gsap
-    .timeline()
+    .timeline({ onComplete: () => (overlayAnimating = false) })
     .to(bar, { opacity: 0, yPercent: 16, duration: 0.2, ease: "power2.in" })
     .add(coverBars({ duration: d1 }), "-=0.05")
     .add(() => {
