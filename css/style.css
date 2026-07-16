@@ -259,7 +259,7 @@ html.nav-incoming .bars__mark {
 }
 
 .site-header .brand img {
-  height: 1.6rem;
+  height: clamp(2.1rem, 3vw, 2.6rem);
   filter: invert(1) brightness(2);
 }
 
@@ -317,16 +317,16 @@ html.nav-incoming .bars__mark {
   gap: 6px;
 }
 
-.menu-btn span {
+.menu-btn__icon span {
   width: 30px;
   height: 3px;
   background: #fff;
   transition: transform 0.35s, opacity 0.35s;
 }
 
-body.menu-open .menu-btn span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-body.menu-open .menu-btn span:nth-child(2) { opacity: 0; }
-body.menu-open .menu-btn span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+body.menu-open .menu-btn__icon span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+body.menu-open .menu-btn__icon span:nth-child(2) { opacity: 0; }
+body.menu-open .menu-btn__icon span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
 @media (min-width: 900px) {
   .site-nav { display: flex; }
@@ -349,6 +349,7 @@ body.menu-open .menu-btn span:nth-child(3) { transform: translateY(-9px) rotate(
 }
 
 .menu-overlay a.menu-link {
+  position: relative;
   font-family: var(--font-display);
   font-size: clamp(3rem, 14vw, 7rem);
   text-transform: uppercase;
@@ -359,16 +360,50 @@ body.menu-open .menu-btn span:nth-child(3) { transform: translateY(-9px) rotate(
   display: flex;
   align-items: baseline;
   gap: 1rem;
+  overflow: hidden;
+  transition: color 0.35s cubic-bezier(0.19, 1, 0.22, 1),
+    padding-left 0.45s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .menu-overlay a.menu-link .idx {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--accent);
+  transition: transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.menu-overlay a.menu-link:hover {
+/* accent underline sweeps in along the row's bottom rule */
+.menu-overlay a.menu-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.menu-overlay a.menu-link:hover,
+.menu-overlay a.menu-link:focus-visible,
+.menu-overlay a.menu-link:active {
   color: var(--accent);
+  padding-left: clamp(0.8rem, 3vw, 2rem);
+}
+
+.menu-overlay a.menu-link:hover .idx,
+.menu-overlay a.menu-link:focus-visible .idx,
+.menu-overlay a.menu-link:active .idx {
+  transform: translateX(0.5rem);
+}
+
+.menu-overlay a.menu-link:hover::after,
+.menu-overlay a.menu-link:focus-visible::after,
+.menu-overlay a.menu-link:active::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .menu-overlay .menu-foot {
@@ -1194,21 +1229,6 @@ body.menu-open .menu-btn span:nth-child(3) { transform: translateY(-9px) rotate(
 
 /* services — index digits pulse as each row crosses center */
 .svc__idx { display: inline-block; will-change: transform; }
-
-/* work — sticky section head that releases as the list scrolls beneath it */
-@media (min-width: 900px) {
-  .section-head--sticky {
-    will-change: transform;
-    background: var(--paper);
-    z-index: 5;
-    margin-bottom: 0;
-    padding-bottom: 1rem;
-  }
-
-  .section--ink .section-head--sticky { background: var(--ink); }
-
-  .section-head--sticky + * { margin-top: clamp(2rem, 5vw, 4rem); }
-}
 
 /* team — 3D tilt-in on reveal */
 .team-card { opacity: 0; transform: rotateY(-18deg) translateY(30px); }

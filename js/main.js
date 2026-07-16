@@ -111,6 +111,26 @@ function getBars() {
   };
 }
 
+/* Normalize the bars' transforms into GSAP-owned percentages.
+   The CSS hidden state is translateY(±100%), which GSAP reads back as
+   pixel `y` (yPercent stays 0) — animating yPercent against that is a
+   silent no-op. Setting y:0 + explicit yPercent hands ownership to GSAP. */
+function initBars(startCovered) {
+  const b = getBars();
+  if (!b) return;
+  gsap.set(b.top, { y: 0, yPercent: startCovered ? 0 : -101 });
+  gsap.set(b.bottom, { y: 0, yPercent: startCovered ? 0 : 101 });
+  gsap.set(b.mark, {
+    x: 0,
+    y: 0,
+    xPercent: -50,
+    yPercent: -50,
+    opacity: startCovered ? 1 : 0,
+    scale: startCovered ? 1 : 0.6,
+  });
+  gsap.set(b.el, { pointerEvents: startCovered ? "auto" : "none" });
+}
+
 function coverBars({ duration = 0.5, withMark = false } = {}) {
   const b = getBars();
   const tl = gsap.timeline();
@@ -134,8 +154,8 @@ function uncoverBars({ duration = 0.6, withMark = false, delay = 0 } = {}) {
   if (withMark) {
     tl.to(b.mark, { opacity: 0, scale: 0.6, duration: 0.25, ease: "power2.in" });
   }
-  tl.to(b.top, { yPercent: -100, duration, ease: "power4.out" }, withMark ? "-=0.05" : 0)
-    .to(b.bottom, { yPercent: 100, duration, ease: "power4.out" }, "<")
+  tl.to(b.top, { yPercent: -101, duration, ease: "power4.out" }, withMark ? "-=0.05" : 0)
+    .to(b.bottom, { yPercent: 101, duration, ease: "power4.out" }, "<")
     .set(b.el, { pointerEvents: "none" });
   return tl;
 }
@@ -219,7 +239,6 @@ function entrance() {
 function initTransitions() {
   const b = getBars();
   if (!b) return;
-  gsap.set(b.mark, { xPercent: -50, yPercent: -50 });
 
   document.querySelectorAll("a[href]").forEach((a) => {
     const href = a.getAttribute("href");
@@ -490,7 +509,6 @@ function initScrollMotion() {
   });
 
   initZoomBands();
-  initStickyHeads();
 }
 
 /* interstitial bands — pinned push-in zoom text */
@@ -507,25 +525,6 @@ function initZoomBands() {
         scrollTrigger: { trigger: band, start: "top top", end: "+=100%", scrub: 0.6, pin: true },
       }
     );
-  });
-}
-
-/* work section head — sticky while the list scrolls beneath it, desktop only */
-function initStickyHeads() {
-  ScrollTrigger.matchMedia({
-    "(min-width: 900px)": function () {
-      document.querySelectorAll(".section-head--sticky").forEach((head) => {
-        const section = head.closest(".section");
-        if (!section) return;
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: () => `+=${Math.max(section.offsetHeight - head.offsetHeight - 120, 200)}`,
-          pin: head,
-          pinSpacing: false,
-        });
-      });
-    },
   });
 }
 
@@ -699,17 +698,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const cameFromNav = document.documentElement.classList.contains("nav-incoming");
   if (cameFromNav && !QA) {
+    // arrived via an internal link: bars are covering (inline head script);
+    // take GSAP ownership of their transforms, then swing them open
+    initBars(true);
     document.documentElement.classList.remove("nav-incoming");
     const pre = document.querySelector(".preloader");
     if (pre) pre.style.display = "none";
     entrance();
-    const b = getBars();
-    if (b) {
-      gsap.set([b.top, b.bottom], { yPercent: 0 });
-      gsap.set(b.mark, { xPercent: -50, yPercent: -50, opacity: 1, scale: 1 });
-      uncoverBars({ duration: reducedMotion ? 0.01 : 0.7, withMark: true, delay: 0.1 });
-    }
+    uncoverBars({ duration: reducedMotion ? 0.01 : 0.7, withMark: true, delay: 0.1 });
   } else {
+    initBars(false);
     document.documentElement.classList.remove("nav-incoming");
     runPreloader();
   }
