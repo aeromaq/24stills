@@ -45,24 +45,26 @@ load them — but native is cleaner and faster.)
 
 ## 2. Host & link the CSS + JS
 
-**Host `css/style.css` and `js/main.js`** somewhere with a stable URL:
-- Easiest: keep them in this GitHub repo and serve via **jsDelivr**
-  `https://cdn.jsdelivr.net/gh/aeromaq/24stills@main/css/style.css`
-  (and `.../js/main.js`), **or**
-- Upload both to Webflow **Assets** (premium plan allows this) and copy their asset URLs.
+This repo is **public**, so **jsDelivr** can serve the CSS, JS *and* media straight
+from GitHub — no uploads needed to get running.
 
 **Project Settings → Custom Code → Head Code:**
 ```html
-<link rel="stylesheet" href="https://YOUR-HOST/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/aeromaq/24stills@main/css/style.css" />
 ```
 
 **Project Settings → Custom Code → Footer Code:**
 ```html
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://YOUR-HOST/main.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/aeromaq/24stills@main/js/main.js"></script>
 ```
 Load order matters: GSAP → ScrollTrigger → main.js.
+
+- While this work is unmerged, swap `@main` for `@main-6wpwcq`.
+- jsDelivr caches branch refs up to ~12h — **pin a git tag** (e.g. `@v1.0.0`) for
+  production so you control cache-busting.
+- Alternative: upload `style.css` / `main.js` to Webflow **Assets** and use those URLs.
 
 ---
 
@@ -186,9 +188,32 @@ Add the single overlay container **once** on the page (not inside the list):
      p.project-overlay__desc
 ```
 
+### 6b. Fallback wiring — hidden bound elements (use if attribute binding fails)
+
+Binding a CMS field *into a custom attribute value* isn't always possible. Binding
+**text, image and link elements** always is. So `main.js` also accepts the data as
+hidden child elements. Inside `.work-card`, add a wrapper set to `display: none`:
+
+```
+.work-card__data            (display:none)
+  span[data-field="brand"]      → text bound to {{ Brand }}
+  span[data-field="format"]     → text bound to {{ Format }}
+  span[data-field="title"]      → text bound to {{ Name }}
+  span[data-field="desc"]       → text bound to {{ Description }}
+  span[data-field="mediaType"]  → text bound to {{ Media type }}
+  a[data-field="media"]         → href bound to {{ Overlay media }}
+  img[data-field="poster"]      → src  bound to {{ Poster }}
+```
+
+`<img>` yields its `src`, `<a>` its `href`, anything else its text.
+
+**Resolution order in `getProjectData()`:** `data-*` attributes → `[data-field]`
+children → built-in `PROJECTS` map. Use whichever of §6 / §6b Webflow lets you bind;
+both are tested and produce an identical overlay.
+
 **Result:** client adds a project in the CMS → a new `.work-card` renders with its
-data-attributes → clicking it runs `openProject(slug, card)` → `getProjectData()` reads
-the attributes → the Netflix overlay fills itself. **No code changes ever needed.**
+data → clicking it runs `openProject(slug, card)` → `getProjectData()` resolves it →
+the Netflix overlay fills itself. **No code changes ever needed.**
 
 ---
 
