@@ -607,22 +607,41 @@ let overlayAnimating = false;
    map used by the hand-coded static build. Expected card attributes:
    data-brand, data-format, data-title, data-desc, data-media-type
    ("video"|"image"), data-media-src, data-poster, data-tile ("true"). */
+/* Second CMS wiring option: read the value out of a child element marked
+   data-field="<name>". <img> yields its src, <a> its href, anything else its
+   text. Binding text/image/link elements is well supported in every CMS,
+   whereas binding values into custom attributes is not always possible —
+   so this exists as the reliable alternative to the data-* route. */
+function fieldValue(cardEl, name) {
+  const el = cardEl.querySelector('[data-field="' + name + '"]');
+  if (!el) return "";
+  if (el.tagName === "IMG") return el.getAttribute("src") || "";
+  if (el.tagName === "A") return el.getAttribute("href") || "";
+  return el.textContent.trim();
+}
+
 function getProjectData(key, cardEl) {
-  const d = cardEl && cardEl.dataset;
-  if (d && d.mediaSrc) {
-    const titleEl = cardEl.querySelector(".work-card__title");
-    return {
-      brand: d.brand || "",
-      format: d.format || "",
-      title: d.title || (titleEl ? titleEl.textContent.trim() : ""),
-      desc: d.desc || "",
-      media: {
-        type: d.mediaType || "image",
-        src: d.mediaSrc,
-        poster: d.poster || "",
-        tile: d.tile === "true",
-      },
-    };
+  if (cardEl) {
+    const d = cardEl.dataset;
+    const src = d.mediaSrc || fieldValue(cardEl, "media");
+    if (src) {
+      const titleEl = cardEl.querySelector(".work-card__title");
+      return {
+        brand: d.brand || fieldValue(cardEl, "brand"),
+        format: d.format || fieldValue(cardEl, "format"),
+        title:
+          d.title ||
+          fieldValue(cardEl, "title") ||
+          (titleEl ? titleEl.textContent.trim() : ""),
+        desc: d.desc || fieldValue(cardEl, "desc"),
+        media: {
+          type: d.mediaType || fieldValue(cardEl, "mediaType") || "image",
+          src: src,
+          poster: d.poster || fieldValue(cardEl, "poster"),
+          tile: (d.tile || fieldValue(cardEl, "tile")) === "true",
+        },
+      };
+    }
   }
   return PROJECTS[key] || null;
 }
