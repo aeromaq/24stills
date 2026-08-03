@@ -549,7 +549,7 @@ function initWorkCards() {
         video.currentTime = 0;
       });
     }
-    card.addEventListener("click", () => openProject(card.dataset.project));
+    card.addEventListener("click", () => openProject(card.dataset.project, card));
   });
 }
 
@@ -601,9 +601,35 @@ function buildOverlayMedia(mediaBox, data) {
 
 let overlayAnimating = false;
 
-function openProject(key) {
+/* Resolve the data that fills the overlay. Prefers CMS-friendly data-*
+   attributes written onto the card (so a CMS such as Webflow can manage
+   projects without editing this file); falls back to the built-in PROJECTS
+   map used by the hand-coded static build. Expected card attributes:
+   data-brand, data-format, data-title, data-desc, data-media-type
+   ("video"|"image"), data-media-src, data-poster, data-tile ("true"). */
+function getProjectData(key, cardEl) {
+  const d = cardEl && cardEl.dataset;
+  if (d && d.mediaSrc) {
+    const titleEl = cardEl.querySelector(".work-card__title");
+    return {
+      brand: d.brand || "",
+      format: d.format || "",
+      title: d.title || (titleEl ? titleEl.textContent.trim() : ""),
+      desc: d.desc || "",
+      media: {
+        type: d.mediaType || "image",
+        src: d.mediaSrc,
+        poster: d.poster || "",
+        tile: d.tile === "true",
+      },
+    };
+  }
+  return PROJECTS[key] || null;
+}
+
+function openProject(key, cardEl) {
   if (overlayAnimating) return;
-  const data = PROJECTS[key];
+  const data = getProjectData(key, cardEl);
   if (!data) return;
 
   const overlay = document.querySelector(".project-overlay");
