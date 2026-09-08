@@ -662,6 +662,31 @@ function initWorkCards() {
 }
 
 /* ------------------------------------------------------------
+   HERO SHOWREEL — load the film only where it earns its bytes.
+
+   The showreel is a ~4 MB decorative layer sitting at 62% opacity behind the
+   headline. On a phone, or on a metered/slow connection, the poster frame
+   carries the same image at 260 KB, so the video is simply never requested.
+   ------------------------------------------------------------ */
+function initHeroVideo() {
+  const video = document.querySelector(".hero video[data-src]");
+  if (!video) return;
+
+  const conn = navigator.connection || {};
+  const tooExpensive =
+    conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || "");
+  const bigEnough = window.matchMedia("(min-width: 900px)").matches;
+
+  if (reducedMotion || tooExpensive || !bigEnough) return; // poster stands in
+
+  video.src = video.dataset.src;
+  video.load();
+  video.play().catch(() => {
+    /* autoplay refused — the poster is already showing, so nothing to do */
+  });
+}
+
+/* ------------------------------------------------------------
    PROJECT DETAIL — poster-first player.
    The <video> ships with `controls` and `preload="none"` so it is usable
    even if this script never runs; the overlaid button is progressive
@@ -827,6 +852,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMenu();
   initScrollMotion();
   initWorkCards();
+  initHeroVideo();
   initDetailFilm();
   initServices();
   initFaq();

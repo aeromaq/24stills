@@ -103,9 +103,11 @@
 
     <!-- 01 · SHOWREEL HERO -->
     <section class="hero">
-      <video autoplay muted loop playsinline poster="assets/img/poster-hero.jpg" aria-hidden="true">
-        <source src="assets/video/hero-loop.mp4" type="video/mp4" />
-      </video>
+      <!-- The showreel is a 4 MB background layer. `data-src` keeps it off the
+           wire until initHeroVideo() decides the connection and viewport can
+           carry it; the poster stands in everywhere else. -->
+      <video muted loop playsinline preload="none" poster="assets/img/poster-hero.jpg"
+             data-src="assets/video/hero-loop.mp4" aria-hidden="true"></video>
       <div class="hero__inner">
         <h1 class="hero__title display">
           <span class="line"><span>Story-Driven</span></span>
