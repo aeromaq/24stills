@@ -1,3 +1,8 @@
 .claude/settings.local.json
 .DS_Store
 Thumbs.db
+
+# Client review materials (kept locally, not part of the site build)
+082026. Feedback Website - 24stills Film - Revision 1.pdf
+additional assets/
+screenshot-1.png
