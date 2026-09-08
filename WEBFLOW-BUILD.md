@@ -129,93 +129,127 @@ data-attributes the animation engine reads.
 
 ---
 
-## 5. Work Projects — CMS Collection
+## 5. Work Projects — CMS Collection  *(already created)*
 
-Create a Collection named **"Work Projects"** with these fields (they map 1:1 to what
-the overlay renders):
+The collection **"Work Projects"** exists on the live site
+(`6a708cfa7a6e232d15509573`) with all 8 projects in it. Its fields mirror
+`data/projects.json` in this repo one-to-one — that file is the source of truth
+for the static build, the CMS is the source of truth for the client's editing.
+Keep them in step.
 
-| CMS field | Type | Maps to overlay field |
-|---|---|---|
-| **Name** | Plain text | project title (`data-title`) |
-| **Slug** | (auto) | used for `data-project` |
-| **Brand** | Plain text | `data-brand` (e.g. "TAG HEUER") |
-| **Format** | Plain text (or Option) | `data-format` (e.g. "Brand Documentary") |
-| **Description** | Plain text (long) | `data-desc` |
-| **Media type** | Option: `video` / `image` | `data-media-type` |
-| **Overlay media** | Video link **or** File/Asset URL | `data-media-src` (the film that plays in the overlay) |
-| **Poster / thumbnail** | Image | `data-poster` + the card's grid thumbnail |
-| **Hover loop** *(optional)* | Video link | the muted loop that plays on card hover |
-| **Order** | Number | manual sort |
-
-Then add the 7 existing projects as items (data is in `js/main.js` → `PROJECTS`, and in
-`WEBFLOW-BUILD.md` §5 reference below).
+| CMS field (slug) | Type | JSON key | Used by |
+|---|---|---|---|
+| `name` | Plain text | `name` | card + detail `<h1>` |
+| `slug` | Plain text | `slug` | the URL: `/work/<slug>/` |
+| `brand` | Plain text | `brand` | mosaic label, detail eyebrow |
+| `client` | Plain text | `client` | detail credits |
+| `format` | Plain text | `format` | detail eyebrow + credits |
+| `year` | Plain text | `year` | detail credits |
+| `location` | Plain text | `location` | detail credits |
+| `services` | Plain text (`·`-separated) | `services[]` | detail credits |
+| `short-description` | Plain text | `shortDescription` | detail hero lede, structured data |
+| `description` | Plain text (long) | `description` | detail body copy |
+| `media-type` | Option `video` / `image` | `mediaType` | whether a player renders |
+| `overlay-media` | Link | `media` | the film file |
+| `youtube-id` | Plain text | `youtube` | embeds YouTube instead of a file |
+| `poster` | Image | `poster` | mosaic thumbnail, detail hero, OG image |
+| `hover-loop` | Link | `hoverLoop` | muted loop on card hover |
+| `gallery` | Multi-image | `gallery[]` | stills below the description |
+| `order` | Number | `order` | sort order across the site |
+| `featured` | Switch | `featured` | shows in the home page's selected work |
+| `seo-title` | Plain text | `seoTitle` | detail `<title>` |
+| `seo-description` | Plain text | `seoDescription` | detail meta description |
 
 ---
 
-## 6. Work grid — Collection List wiring (the critical part)
+## 6. Work mosaic — Collection List wiring
 
-On the Work page, build a **Collection List** bound to "Work Projects." Each item is a
-card that must reproduce this structure **and** carry CMS-bound custom attributes:
+Work cards are **links to detail pages**, not buttons that open an overlay. That
+change is what gives every project a crawlable, SEO-addressable URL; the cinematic
+hand-off is still there, carried by the letterbox-bar page transition.
+
+On the Work page, build a **Collection List** bound to "Work Projects", sorted by
+`order`. Each item:
 
 ```
-button.work-card                     ← Element Settings → Custom attributes:
-                                          data-project = {{ Slug }}
-                                          data-brand   = {{ Brand }}
-                                          data-format  = {{ Format }}
-                                          data-title   = {{ Name }}
-                                          data-desc    = {{ Description }}
-                                          data-media-type = {{ Media type }}
-                                          data-media-src  = {{ Overlay media }}
-                                          data-poster     = {{ Poster }}
-  .work-card__media.reveal-media
-     <img>   src bound to {{ Poster }}
+a.mosaic__item              ← link block, Settings → Page → Work Project (collection page)
+                               add class "has-film" via a conditional on Media type = video
+  .mosaic__media
+     <img>   src bound to {{ Poster }},   alt bound to {{ Name }}
      <video> src bound to {{ Hover loop }} (muted loop playsinline preload=none)
-     .work-card__hint  → text "Watch ↗"
+  .mosaic__label
+     span.mosaic__client.mono  → text bound to {{ Brand }}
+     span.mosaic__title        → text bound to {{ Name }}
+```
+
+Wrap it in `.mosaic` (a plain div — the grid is CSS, not a Webflow layout) inside
+`section.section--mosaic`.
+
+The home page uses the same collection filtered to `Featured = on`, limit 4, with the
+editorial card markup instead:
+
+```
+a.work-card                 ← link block → Work Project collection page
+  .work-card__media.reveal-media
+     <img> {{ Poster }} · <video> {{ Hover loop }}
+     span.work-card__hint  → "View Project ↗"
   .work-card__meta
-     .mono  → text bound to {{ Format }}
-  h2.work-card__title.display  → text bound to {{ Name }}
+     span.mono → "Content Format // " + {{ Format }}
+     span.mono → "Client // " + {{ Client }}
+  h3.work-card__title.display  → {{ Name }}
 ```
 
-Add the single overlay container **once** on the page (not inside the list):
-```
-.project-overlay  [role=dialog aria-modal=true]
-  .project-overlay__media
-     button.project-overlay__close  → text "Close ✕"
-  .project-overlay__bar
-     div
-       span.project-overlay__brand.mono
-       h3.project-overlay__title.display
-     p.project-overlay__desc
-```
-
-### 6b. Fallback wiring — hidden bound elements (use if attribute binding fails)
-
-Binding a CMS field *into a custom attribute value* isn't always possible. Binding
-**text, image and link elements** always is. So `main.js` also accepts the data as
-hidden child elements. Inside `.work-card`, add a wrapper set to `display: none`:
-
-```
-.work-card__data            (display:none)
-  span[data-field="brand"]      → text bound to {{ Brand }}
-  span[data-field="format"]     → text bound to {{ Format }}
-  span[data-field="title"]      → text bound to {{ Name }}
-  span[data-field="desc"]       → text bound to {{ Description }}
-  span[data-field="mediaType"]  → text bound to {{ Media type }}
-  a[data-field="media"]         → href bound to {{ Overlay media }}
-  img[data-field="poster"]      → src  bound to {{ Poster }}
-```
-
-`<img>` yields its `src`, `<a>` its `href`, anything else its text.
-
-**Resolution order in `getProjectData()`:** `data-*` attributes → `[data-field]`
-children → built-in `PROJECTS` map. Use whichever of §6 / §6b Webflow lets you bind;
-both are tested and produce an identical overlay.
-
-**Result:** client adds a project in the CMS → a new `.work-card` renders with its
-data → clicking it runs `openProject(slug, card)` → `getProjectData()` resolves it →
-the Netflix overlay fills itself. **No code changes ever needed.**
+`main.js` needs no per-project data on the card any more — it only attaches the hover
+loop. There is no `data-*` contract left to get wrong.
 
 ---
+
+## 6b. Work Project template page (the collection page)
+
+Webflow generates one page per item at `/work-projects/<slug>`. Change the collection's
+URL prefix to `work` under **Collection Settings → Slug** so it matches this repo's
+`/work/<slug>/`.
+
+Rebuild the template with these classes (the static equivalent is generated by
+`tools/build.js` — open any `work/<slug>/index.html` and copy the structure):
+
+```
+nav.breadcrumb                Home / Work / {{ Name }}
+section.detail-hero
+   img.detail-hero__bg        {{ Poster }}
+   .detail-hero__inner
+      span.eyebrow            {{ Brand }} // {{ Format }}
+      h1.detail-hero__title.display   {{ Name }}
+      p.detail-hero__lede     {{ Short description }}
+section.section.detail-film   (conditional: Media type = video)
+   .detail-film__frame
+      video.detail-film__video   {{ Overlay media }}, poster {{ Poster }}, controls, preload=none
+      button.detail-film__play → span.ring + span.rec "Play Film"
+section.section.detail-body
+   .detail-body__grid
+      div  → span.eyebrow + p.detail-body__copy  {{ Description }}
+      dl.detail-meta → .detail-meta__row (dt.mono + dd) per credit
+section.section.detail-gallery   (conditional: Gallery is set)
+section.section.detail-related   Collection List, 3 items, mosaic markup
+nav.detail-nav                   .detail-nav__link--prev / --next
+```
+
+**SEO settings on the template** (Page Settings → SEO, all bound to CMS fields):
+title `{{ SEO title }}`, description `{{ SEO description }}`, OG image `{{ Poster }}`.
+Add the `VideoObject` / `BreadcrumbList` JSON-LD in the page's custom code head, binding
+the same fields — copy the shape from a generated page.
+
+---
+
+## 6c. Keeping the two in sync
+
+The repo and the CMS hold the same content twice, by design: the repo so the static
+build has something to render, the CMS so the client can edit without a developer.
+
+- Content change from the client → they edit the CMS → mirror it into
+  `data/projects.json` and re-run `node tools/build.js`.
+- Structural change (new field, new section) → add it to `data/projects.json` and
+  `tools/build.js` first, then add the matching CMS field and bind it.
 
 ## 7. Assets
 
@@ -260,9 +294,10 @@ Docs: https://developers.webflow.com/mcp/installing/claude-code
 - [ ] `style.css` linked in Head; GSAP + ScrollTrigger + `main.js` linked in Footer (in order)
 - [ ] Global `#bars`, `.preloader`, `.menu-*` symbol on every page
 - [ ] Page structure uses the exact classes/attrs in §3–4
-- [ ] "Work Projects" Collection created with §5 fields
-- [ ] Collection List cards carry the §6 `data-*` custom attributes
-- [ ] Single `.project-overlay` container present on the Work page
+- [ ] "Work Projects" collection URL prefix changed to `work`
+- [ ] Collection List on Work uses the `.mosaic__item` markup and links to the collection page
+- [ ] Home page Collection List filtered to `Featured = on`, limit 4
+- [ ] Work Project template page built per §6b, SEO fields bound to CMS
 - [ ] Assets uploaded, CMS media fields pointed at them
 - [ ] Published to `.webflow.io` and tested (custom code does NOT run in Designer)
-- [ ] Add a project in the CMS as a smoke test → confirm its overlay opens correctly
+- [ ] Add a project in the CMS as a smoke test → confirm its detail page renders
