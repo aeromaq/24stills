@@ -34,71 +34,9 @@ if (QA) {
 }
 
 /* ------------------------------------------------------------
-   PROJECT DATA — powers the "netflix effect" overlay
-   ------------------------------------------------------------ */
-const PROJECTS = {
-  dzbank: {
-    brand: "DZ BANK",
-    title: "50 Years DZ Bank New York",
-    format: "Image Film",
-    media: { type: "image", src: "assets/img/thumb-dzbank.jpg" },
-    desc:
-      "A milestone worth remembering. To mark 50 years of DZ Bank in New York, we crafted a short film that traces the bank's history in the city — part time capsule, part tribute, told through the people who were there.",
-  },
-  horvath: {
-    brand: "HORVÁTH",
-    title: "High-Performance Leadership Event",
-    format: "Event Film",
-    media: { type: "image", src: "assets/img/thumb-horvath.jpg" },
-    desc:
-      "Horváth, an international management consultancy, brought their first leadership event to New York City. We captured the energy of the day through conversations with speakers from Hugo Boss, Stanford, and the NBA — letting their words tell the story of what made it worth being there.",
-  },
-  violife: {
-    brand: "VIOLIFE",
-    title: "Undairy the Craving",
-    format: "Brand Experience",
-    media: { type: "image", src: "assets/logos/client-violife.png", tile: true },
-    desc:
-      "For Violife, 24stills produced video content around a New York City brand experience — following the crew across the city as people had Violife products delivered right to them.",
-  },
-  tagheuer: {
-    brand: "TAG HEUER",
-    title: "One Night in NYC",
-    format: "Brand Documentary",
-    media: { type: "video", src: "assets/video/preview-tagheuer.mp4", poster: "assets/img/thumb-tagheuer.jpg" },
-    desc:
-      "Hodinkee and TAG Heuer hosted an intimate dinner celebrating the launch of the limited edition Carrera Chronograph Seafarer x Hodinkee and the brand's rich history of 'Decades at Sea.' We supported the evening from concept to delivery — planning the content, filming on-site, and producing assets tailored for release across channels.",
-  },
-  huebner: {
-    brand: "HÜBNER",
-    title: "Process Harmonization",
-    format: "Corporate Documentary",
-    media: { type: "video", src: "assets/video/preview-huebner.mp4", poster: "assets/img/thumb-huebner.jpg" },
-    desc:
-      "A corporate documentary following Hübner's process harmonization journey — real people, real change, told from inside the organization.",
-  },
-  roehm: {
-    brand: "RÖHM",
-    title: "Customer Project: Röhm",
-    format: "Corporate Documentary",
-    media: { type: "video", src: "assets/video/preview-roehm.mp4", poster: "assets/img/thumb-roehm.jpg" },
-    desc:
-      "An inside look at the EMPLEOX customer project with Röhm — a corporate documentary capturing collaboration between teams as it actually happens.",
-  },
-  cycling: {
-    brand: "PASSION CYCLING",
-    title: "Passion Cycling",
-    format: "Commercial",
-    media: { type: "image", src: "assets/img/thumb-cycling.jpg" },
-    desc:
-      "A commercial built around the pure feeling of riding — pace, sweat and asphalt. Shot to move as fast as its subject.",
-  },
-};
-
-/* ------------------------------------------------------------
    LETTERBOX BARS — shared "cinema shutter" motif.
-   Reused by: preloader hand-off, page transitions, and the
-   work-item overlay. One instance per page (#bars).
+   Reused by: preloader hand-off and page transitions.
+   One instance per page (.bars).
    ------------------------------------------------------------ */
 function getBars() {
   const el = document.querySelector(".bars");
@@ -228,6 +166,99 @@ function entrance() {
   if (meta) {
     gsap.fromTo(meta, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.5, ease: "power3.out" });
   }
+  // detail pages open on the project title rather than a hero headline
+  const detail = document.querySelector(".detail-hero__inner");
+  if (detail) {
+    gsap.fromTo(
+      detail.children,
+      { opacity: 0, y: 28 },
+      { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: "power3.out" }
+    );
+  }
+}
+
+/* ------------------------------------------------------------
+   ANCHOR SCROLLING
+
+   Native anchor jumps and `scroll-behavior: smooth` both fight
+   ScrollTrigger: pinned sections insert a pin-spacer *after* the browser
+   has already resolved the target's position, so the landing offset is
+   computed against a layout that no longer exists. On a cold load of
+   `index.html#contact` that left the page sitting at scroll 0 — the
+   Services / Contact nav links did nothing when followed from another
+   page. So we own anchor scrolling entirely: measure after ScrollTrigger
+   has built its spacers, then scroll.
+   ------------------------------------------------------------ */
+function scrollToTarget(target, smooth = true) {
+  if (!target) return;
+  ScrollTrigger.refresh();
+  const top = target.getBoundingClientRect().top + window.scrollY;
+  window.scrollTo({
+    top,
+    behavior: smooth && !reducedMotion ? "smooth" : "auto",
+  });
+}
+
+/** Resolve the "#id" part of an href to an element on this page, or null. */
+function sameDocTarget(href) {
+  if (!href) return null;
+  const hashIndex = href.indexOf("#");
+  if (hashIndex === -1) return null;
+  const id = href.slice(hashIndex + 1);
+  if (!id) return null;
+
+  const pathPart = href.slice(0, hashIndex);
+  if (pathPart) {
+    // "index.html#services" only counts as same-document when we're on index
+    const here = window.location.pathname.split("/").pop() || "index.html";
+    const there = pathPart.split("/").pop();
+    if (there && there !== here) return null;
+  }
+  return document.getElementById(id);
+}
+
+function initAnchors() {
+  document.querySelectorAll("a[href]").forEach((a) => {
+    const href = a.getAttribute("href");
+    const target = sameDocTarget(href);
+    if (!target) return;
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (document.body.classList.contains("menu-open")) closeMenu();
+      scrollToTarget(target);
+      history.replaceState(null, "", "#" + target.id);
+    });
+  });
+}
+
+/* A hash present on load. Placing the page once isn't enough: the webfont
+   reflows headlines and lazy images fill their boxes *after* the first
+   placement, which slides the target out from under us. So we re-apply the
+   landing position on each settling milestone, and stop the moment the
+   visitor takes over the scroll themselves. */
+let hashTarget = null;
+
+function applyHashLanding() {
+  if (!hashTarget) return;
+  scrollToTarget(hashTarget, false);
+}
+
+function honorInitialHash() {
+  if (!window.location.hash) return;
+  hashTarget = document.getElementById(window.location.hash.slice(1));
+  if (!hashTarget) return;
+
+  const release = () => (hashTarget = null);
+  // any deliberate input from the visitor ends our claim on the scroll position
+  ["wheel", "touchstart", "keydown", "pointerdown"].forEach((evt) =>
+    window.addEventListener(evt, release, { once: true, passive: true })
+  );
+
+  requestAnimationFrame(() => requestAnimationFrame(applyHashLanding));
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(applyHashLanding).catch(() => {});
+  }
+  window.addEventListener("load", () => setTimeout(applyHashLanding, 60), { once: true });
 }
 
 /* ------------------------------------------------------------
@@ -246,11 +277,15 @@ function initTransitions() {
       href &&
       !href.startsWith("#") &&
       !href.startsWith("mailto:") &&
+      !href.startsWith("tel:") &&
       !href.startsWith("http") &&
-      !a.target;
+      !a.target &&
+      !sameDocTarget(href); // in-page anchors are handled by initAnchors
     if (!internal) return;
 
     a.addEventListener("click", (e) => {
+      // let modifier-clicks open a new tab the way the user asked
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
       e.preventDefault();
       if (document.body.classList.contains("menu-open")) closeMenu();
       try {
@@ -286,6 +321,7 @@ function openMenu() {
   if (label) label.textContent = "Close";
   btn.setAttribute("aria-expanded", "true");
   btn.setAttribute("aria-label", "Close menu");
+  overlay.removeAttribute("aria-hidden");
 
   gsap.set(overlay, { visibility: "visible" });
   gsap
@@ -316,7 +352,10 @@ function closeMenu() {
     clipPath: "inset(0 0 100% 0)",
     duration: 0.5,
     ease: "power4.inOut",
-    onComplete: () => gsap.set(overlay, { visibility: "hidden" }),
+    onComplete: () => {
+      gsap.set(overlay, { visibility: "hidden" });
+      overlay.setAttribute("aria-hidden", "true");
+    },
   });
 }
 
@@ -468,6 +507,17 @@ function initScrollMotion() {
     });
   }
 
+  // project detail hero — slow push-in as the page is scrolled away
+  const detailBg = document.querySelector(".detail-hero__bg");
+  if (detailBg) {
+    gsap.to(detailBg, {
+      yPercent: 10,
+      scale: 1.08,
+      ease: "none",
+      scrollTrigger: { trigger: ".detail-hero", start: "top top", end: "bottom top", scrub: true },
+    });
+  }
+
   // trusted-by marquee "wakes up" as the section is scrolled to
   document.querySelectorAll(".logo-marquee").forEach((el) => {
     gsap.fromTo(
@@ -508,207 +558,128 @@ function initScrollMotion() {
     });
   });
 
+  // mosaic tiles stagger up as each row enters
+  document.querySelectorAll(".mosaic").forEach((grid) => {
+    gsap.to(grid.querySelectorAll(".mosaic__item"), {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.06,
+      ease: "power3.out",
+      scrollTrigger: { trigger: grid, start: "top 88%" },
+    });
+  });
+
   initZoomBands();
 }
 
-/* interstitial bands — pinned push-in zoom text */
+/* Interstitial bands — pinned push-in zoom text.
+
+   Pinning a full-height section is only a good idea when there's room for
+   it: on short/mobile viewports it eats the whole screen for a scroll
+   length that reads as "the page is stuck". matchMedia scopes the pin to
+   desktop and tears it down cleanly on resize; below that the band still
+   gets its push-in, just unpinned. */
 function initZoomBands() {
-  document.querySelectorAll(".band--zoom").forEach((band) => {
-    const statement = band.querySelector(".statement");
-    if (!statement) return;
-    gsap.fromTo(
-      statement,
-      { scale: 0.72 },
-      {
-        scale: 1.08,
-        ease: "none",
-        scrollTrigger: { trigger: band, start: "top top", end: "+=100%", scrub: 0.6, pin: true },
-      }
-    );
+  const bands = document.querySelectorAll(".band--zoom");
+  if (!bands.length) return;
+
+  ScrollTrigger.matchMedia({
+    "(min-width: 900px)": () => {
+      bands.forEach((band) => {
+        const statement = band.querySelector(".statement");
+        if (!statement) return;
+        gsap.fromTo(
+          statement,
+          { scale: 0.72 },
+          {
+            scale: 1.08,
+            ease: "none",
+            scrollTrigger: { trigger: band, start: "top top", end: "+=100%", scrub: 0.6, pin: true },
+          }
+        );
+      });
+    },
+    "(max-width: 899px)": () => {
+      bands.forEach((band) => {
+        const statement = band.querySelector(".statement");
+        if (!statement) return;
+        gsap.fromTo(
+          statement,
+          { scale: 0.82 },
+          {
+            scale: 1,
+            ease: "none",
+            scrollTrigger: { trigger: band, start: "top bottom", end: "bottom top", scrub: 0.6 },
+          }
+        );
+      });
+    },
   });
 }
 
 /* ------------------------------------------------------------
-   WORK CARDS — hover play loop + netflix-style letterbox overlay
+   WORK CARDS & MOSAIC TILES — hover play loop.
+   Cards are real links to /work/<slug>/, so there is no click handler
+   here: navigation is the anchor's job (and stays crawlable).
    ------------------------------------------------------------ */
 function initWorkCards() {
-  document.querySelectorAll(".work-card").forEach((card) => {
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  document.querySelectorAll(".work-card, .mosaic__item").forEach((card) => {
     const video = card.querySelector("video");
-    if (video) {
-      card.classList.add("has-video");
-      const media = card.querySelector(".work-card__media");
-      if (media && !media.querySelector(".work-card__ring")) {
-        const ring = document.createElement("span");
-        ring.className = "work-card__ring";
-        ring.setAttribute("aria-hidden", "true");
-        media.appendChild(ring);
-      }
-      card.addEventListener("mouseenter", () => video.play().catch(() => {}));
-      card.addEventListener("mouseleave", () => {
-        video.pause();
-        video.currentTime = 0;
-      });
+    if (!video) return;
+
+    card.classList.add("has-video");
+    const media = card.querySelector(".work-card__media, .mosaic__media");
+    if (media && !media.querySelector(".work-card__ring")) {
+      const ring = document.createElement("span");
+      ring.className = "work-card__ring";
+      ring.setAttribute("aria-hidden", "true");
+      media.appendChild(ring);
     }
-    card.addEventListener("click", () => openProject(card.dataset.project, card));
+
+    if (!canHover) {
+      /* Touch devices get no hover state, so the loop would never play and
+         `preload="none"` would leave a dead <video> in the DOM. Drop it and
+         let the poster image stand — the film itself lives on the detail
+         page, which is one tap away. */
+      video.remove();
+      card.classList.remove("has-video");
+      return;
+    }
+
+    const play = () => video.play().catch(() => {});
+    const stop = () => {
+      video.pause();
+      video.currentTime = 0;
+    };
+    card.addEventListener("mouseenter", play);
+    card.addEventListener("focusin", play);
+    card.addEventListener("mouseleave", stop);
+    card.addEventListener("focusout", stop);
   });
 }
 
-function buildOverlayMedia(mediaBox, data) {
-  mediaBox.querySelectorAll("video, img, .tile, .project-overlay__play").forEach((n) => n.remove());
+/* ------------------------------------------------------------
+   PROJECT DETAIL — poster-first player.
+   The <video> ships with `controls` and `preload="none"` so it is usable
+   even if this script never runs; the overlaid button is progressive
+   enhancement that starts playback on the first tap (which also satisfies
+   iOS's user-gesture requirement).
+   ------------------------------------------------------------ */
+function initDetailFilm() {
+  document.querySelectorAll(".detail-film__frame").forEach((frame) => {
+    const video = frame.querySelector("video");
+    const btn = frame.querySelector(".detail-film__play");
+    if (!video || !btn) return;
 
-  let media;
-  if (data.media.type === "video") {
-    media = document.createElement("video");
-    media.src = data.media.src;
-    media.poster = data.media.poster || "";
-    media.controls = false;
-    media.loop = true;
-    media.playsInline = true;
-    media.preload = "none";
-  } else if (data.media.tile) {
-    media = document.createElement("div");
-    media.className = "tile";
-    media.style.cssText =
-      "width:100%;height:100%;background:var(--accent);display:flex;align-items:center;justify-content:center;";
-    const img = document.createElement("img");
-    img.src = data.media.src;
-    img.alt = data.brand;
-    img.style.cssText = "width:50%;height:auto;object-fit:contain;filter:brightness(0);";
-    media.appendChild(img);
-  } else {
-    media = document.createElement("img");
-    media.src = data.media.src;
-    media.alt = `${data.brand} — ${data.title}`;
-  }
-  mediaBox.prepend(media);
-
-  // custom player: poster + centered play button — only for pieces with an actual film
-  if (data.media.type === "video") {
-    const play = document.createElement("button");
-    play.type = "button";
-    play.className = "project-overlay__play";
-    play.setAttribute("aria-label", `Play ${data.title}`);
-    play.innerHTML = '<span class="ring" aria-hidden="true"></span><span class="rec">Play Film</span>';
-    play.addEventListener("click", () => {
-      const overlay = document.querySelector(".project-overlay");
-      media.controls = true;
-      media.play().catch(() => {});
-      overlay.classList.add("is-playing");
+    btn.addEventListener("click", () => {
+      frame.classList.add("is-playing");
+      video.play().catch(() => {});
+      video.focus({ preventScroll: true });
     });
-    mediaBox.appendChild(play);
-  }
-}
-
-let overlayAnimating = false;
-
-/* Resolve the data that fills the overlay. Prefers CMS-friendly data-*
-   attributes written onto the card (so a CMS such as Webflow can manage
-   projects without editing this file); falls back to the built-in PROJECTS
-   map used by the hand-coded static build. Expected card attributes:
-   data-brand, data-format, data-title, data-desc, data-media-type
-   ("video"|"image"), data-media-src, data-poster, data-tile ("true"). */
-/* Second CMS wiring option: read the value out of a child element marked
-   data-field="<name>". <img> yields its src, <a> its href, anything else its
-   text. Binding text/image/link elements is well supported in every CMS,
-   whereas binding values into custom attributes is not always possible —
-   so this exists as the reliable alternative to the data-* route. */
-function fieldValue(cardEl, name) {
-  const el = cardEl.querySelector('[data-field="' + name + '"]');
-  if (!el) return "";
-  if (el.tagName === "IMG") return el.getAttribute("src") || "";
-  if (el.tagName === "A") return el.getAttribute("href") || "";
-  return el.textContent.trim();
-}
-
-function getProjectData(key, cardEl) {
-  if (cardEl) {
-    const d = cardEl.dataset;
-    const src = d.mediaSrc || fieldValue(cardEl, "media");
-    if (src) {
-      const titleEl = cardEl.querySelector(".work-card__title");
-      return {
-        brand: d.brand || fieldValue(cardEl, "brand"),
-        format: d.format || fieldValue(cardEl, "format"),
-        title:
-          d.title ||
-          fieldValue(cardEl, "title") ||
-          (titleEl ? titleEl.textContent.trim() : ""),
-        desc: d.desc || fieldValue(cardEl, "desc"),
-        media: {
-          type: d.mediaType || fieldValue(cardEl, "mediaType") || "image",
-          src: src,
-          poster: d.poster || fieldValue(cardEl, "poster"),
-          tile: (d.tile || fieldValue(cardEl, "tile")) === "true",
-        },
-      };
-    }
-  }
-  return PROJECTS[key] || null;
-}
-
-function openProject(key, cardEl) {
-  if (overlayAnimating) return;
-  const data = getProjectData(key, cardEl);
-  if (!data) return;
-
-  const overlay = document.querySelector(".project-overlay");
-  if (!overlay || overlay.classList.contains("open")) return;
-  const mediaBox = overlay.querySelector(".project-overlay__media");
-  const brand = overlay.querySelector(".project-overlay__brand");
-  const title = overlay.querySelector(".project-overlay__title");
-  const desc = overlay.querySelector(".project-overlay__desc");
-  const bar = overlay.querySelector(".project-overlay__bar");
-
-  // netflix sequence: bars CLOSE over the page first, the project content
-  // swaps in while the screen is fully covered, then the bars part to
-  // reveal it — the overlay must never pop in before the bars have met.
-  overlayAnimating = true;
-  const d1 = reducedMotion ? 0.01 : 0.42;
-  const d2 = reducedMotion ? 0.01 : 0.55;
-  gsap
-    .timeline({ onComplete: () => (overlayAnimating = false) })
-    .add(coverBars({ duration: d1, withMark: true }))
-    .add(() => {
-      buildOverlayMedia(mediaBox, data);
-      brand.textContent = `${data.brand} // ${data.format}`;
-      title.textContent = data.title;
-      desc.textContent = data.desc;
-      overlay.classList.remove("is-playing");
-      overlay.classList.add("open");
-      document.body.style.overflow = "hidden";
-      gsap.set(bar, { opacity: 0, yPercent: 24 });
-    })
-    .add(uncoverBars({ duration: d2, withMark: true }), "+=0.12")
-    .fromTo(bar, { opacity: 0, yPercent: 24 }, { opacity: 1, yPercent: 0, duration: 0.4, ease: "power3.out" }, "-=0.3");
-}
-
-function closeProject() {
-  if (overlayAnimating) return;
-  const overlay = document.querySelector(".project-overlay");
-  if (!overlay || !overlay.classList.contains("open")) return;
-  const bar = overlay.querySelector(".project-overlay__bar");
-  const d1 = reducedMotion ? 0.01 : 0.42;
-  const d2 = reducedMotion ? 0.01 : 0.55;
-
-  overlayAnimating = true;
-  gsap
-    .timeline({ onComplete: () => (overlayAnimating = false) })
-    .to(bar, { opacity: 0, yPercent: 16, duration: 0.2, ease: "power2.in" })
-    .add(coverBars({ duration: d1 }), "-=0.05")
-    .add(() => {
-      overlay.classList.remove("open", "is-playing");
-      overlay.querySelectorAll("video").forEach((v) => v.pause());
-      document.body.style.overflow = "";
-    })
-    .add(uncoverBars({ duration: d2 }), "+=0.02");
-}
-
-function initOverlayClose() {
-  const overlay = document.querySelector(".project-overlay");
-  if (!overlay) return;
-  overlay.querySelector(".project-overlay__close").addEventListener("click", closeProject);
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && overlay.classList.contains("open")) closeProject();
+    video.addEventListener("play", () => frame.classList.add("is-playing"));
   });
 }
 
@@ -721,16 +692,23 @@ function initServices() {
     const body = row.querySelector(".svc__body");
     head.addEventListener("click", () => {
       const isOpen = row.classList.contains("open");
+
       document.querySelectorAll(".svc__row.open").forEach((other) => {
         if (other === row) return;
         other.classList.remove("open");
+        other.querySelector(".svc__head").setAttribute("aria-expanded", "false");
         gsap.to(other.querySelector(".svc__body"), { height: 0, duration: 0.5, ease: "power3.inOut" });
       });
+
       row.classList.toggle("open", !isOpen);
+      head.setAttribute("aria-expanded", String(!isOpen));
       gsap.to(body, {
         height: isOpen ? 0 : "auto",
         duration: 0.6,
         ease: "power3.inOut",
+        /* Refresh once the row has finished resizing rather than on a
+           guessed timeout, so triggers below never measure mid-animation. */
+        onComplete: () => ScrollTrigger.refresh(),
       });
       if (!isOpen) {
         gsap.fromTo(
@@ -739,9 +717,61 @@ function initServices() {
           { opacity: 1, x: 0, duration: 0.4, stagger: 0.05, delay: 0.15, ease: "power2.out" }
         );
       }
-      setTimeout(() => ScrollTrigger.refresh(), 650);
     });
   });
+}
+
+/* ------------------------------------------------------------
+   FAQ accordion (weddings)
+   ------------------------------------------------------------ */
+function initFaq() {
+  document.querySelectorAll(".faq__row").forEach((row) => {
+    const head = row.querySelector(".faq__q");
+    const body = row.querySelector(".faq__a");
+    if (!head || !body) return;
+    head.addEventListener("click", () => {
+      const isOpen = row.classList.contains("open");
+      row.classList.toggle("open", !isOpen);
+      head.setAttribute("aria-expanded", String(!isOpen));
+      gsap.to(body, {
+        height: isOpen ? 0 : "auto",
+        duration: 0.45,
+        ease: "power3.inOut",
+        onComplete: () => ScrollTrigger.refresh(),
+      });
+    });
+  });
+}
+
+/* ------------------------------------------------------------
+   LAYOUT SETTLING
+
+   Every trigger position is a measurement of the page, and the page keeps
+   changing after DOMContentLoaded: the display webfont reflows headlines,
+   lazy images fill their boxes, the hero video swaps in. Each of those
+   invalidates start/end values that were computed earlier. Refresh once
+   the page has actually stopped moving.
+   ------------------------------------------------------------ */
+function initRefreshTriggers() {
+  const refresh = () => {
+    ScrollTrigger.refresh();
+    applyHashLanding();
+  };
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(refresh).catch(() => {});
+  }
+  window.addEventListener("load", refresh, { once: true });
+
+  // catch any image that resolves late without pinning a listener per image
+  if ("ResizeObserver" in window) {
+    let pending = null;
+    const ro = new ResizeObserver(() => {
+      clearTimeout(pending);
+      pending = setTimeout(refresh, 120);
+    });
+    ro.observe(document.body);
+  }
 }
 
 /* ------------------------------------------------------------
@@ -767,11 +797,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   initTransitions();
+  initAnchors();
   initMenu();
   initScrollMotion();
   initWorkCards();
-  initOverlayClose();
+  initDetailFilm();
   initServices();
+  initFaq();
+  initRefreshTriggers();
+  honorInitialHash();
 
   const yr = document.querySelector("[data-year]");
   if (yr) yr.textContent = new Date().getFullYear();

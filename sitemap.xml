@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.24stills.net/</loc><priority>1.0</priority></url>
-  <url><loc>https://www.24stills.net/work.html</loc><priority>0.9</priority></url>
-  <url><loc>https://www.24stills.net/about.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.24stills.net/</loc><lastmod>2026-09-08</lastmod><priority>1.0</priority></url>
+  <url><loc>https://www.24stills.net/work.html</loc><lastmod>2026-09-08</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.24stills.net/about.html</loc><lastmod>2026-09-08</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.24stills.net/work/50-years-dz-bank-new-york/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.24stills.net/work/one-night-in-nyc/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.24stills.net/work/leadership-strategies/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.24stills.net/work/undairy-the-craving/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.24stills.net/work/dz-bank-a-summit-for-50-years/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.24stills.net/work/process-harmonization/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.24stills.net/work/customer-project-rohm/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.24stills.net/work/passion-cycling/</loc><lastmod>2026-09-08</lastmod><priority>0.7</priority></url>
 </urlset>

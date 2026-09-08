@@ -18,6 +18,7 @@
   <!-- intentionally unlisted: not linked from main navigation -->
   <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" type="image/png" href="assets/logos/24stills-submark.png" />
+  <link rel="apple-touch-icon" href="assets/logos/24stills-submark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -33,6 +34,8 @@
     <img class="bars__mark" src="assets/logos/24stills-submark.png" alt="" />
   </div>
 
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
     <a class="brand" href="index.html" aria-label="24stills — home">
       <img src="assets/logos/24stills-logo.png" alt="24stills" />
@@ -42,15 +45,15 @@
     </nav>
     <button class="menu-btn" aria-label="Open menu" style="visibility:hidden;">
       <span class="menu-btn__label">Menu</span>
-      <span class="menu-btn__icon"><span></span><span></span><span></span></span>
+      <span class="menu-btn__icon" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
   </header>
 
-  <main>
+  <main id="main">
 
     <!-- hero -->
     <section class="hero" style="height: 88svh;">
-      <img class="hero-poster" src="assets/img/thumb-wedding.jpg" alt="Wedding highlight film — Sara + Justin" />
+      <img class="hero-poster" src="assets/img/wed-melanie-philipp.jpg" alt="Melanie and Philipp — wedding highlight film by 24stills" fetchpriority="high" />
       <div class="hero__inner">
         <h1 class="hero__title display">
           <span class="line"><span>Weddings</span></span>
@@ -65,15 +68,44 @@
     <section class="section">
       <span class="eyebrow">01 // Your Day, As A Film</span>
       <h2 class="statement" data-reveal="tracking" data-accent="once" style="margin-top:1.5rem;">
-        Some stories only happen once. We film yours the way we film everything — with intention, honesty and craft.
+        Some stories only happen once. We film yours the way we film everything — with intention, honesty, and care.
       </h2>
-      <p class="body-note">
-        Cinematic wedding highlight films, shot unobtrusively and edited to feel like you —
-        not like a template.
-      </p>
+    </section>
 
-      <div class="wed-detail reveal-media">
-        <img src="assets/img/thumb-wedding.jpg" alt="Sara and Justin, Brooklyn wedding" loading="lazy" />
+    <!-- 02 · FILM RASTER — same mosaic language as the main Work section -->
+    <section class="section section--mosaic">
+      <div class="section-head">
+        <h2 class="display">Films</h2>
+        <span class="mono">Recent Weddings</span>
+      </div>
+      <div class="mosaic">
+        <figure class="mosaic__item mosaic__item--static">
+          <div class="mosaic__media">
+            <img src="assets/img/wed-melanie-philipp.jpg" alt="Melanie and Philipp — wedding highlight film" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="mosaic__label">
+            <span class="mosaic__client mono">Highlight Film</span>
+            <span class="mosaic__title">Melanie + Philipp</span>
+          </figcaption>
+        </figure>
+        <figure class="mosaic__item mosaic__item--static">
+          <div class="mosaic__media">
+            <img src="assets/img/wed-lilly-andy.jpg" alt="Lilly and Andy — wedding highlight film" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="mosaic__label">
+            <span class="mosaic__client mono">Highlight Film</span>
+            <span class="mosaic__title">Lilly + Andy</span>
+          </figcaption>
+        </figure>
+        <figure class="mosaic__item mosaic__item--static">
+          <div class="mosaic__media">
+            <img src="assets/img/thumb-wedding.jpg" alt="Sara and Justin — wedding highlight film" loading="lazy" decoding="async" />
+          </div>
+          <figcaption class="mosaic__label">
+            <span class="mosaic__client mono">Highlight Film</span>
+            <span class="mosaic__title">Sara + Justin</span>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -88,44 +120,89 @@
         <li><span>//</span> Cinematic highlight film, 3–5 minutes</li>
         <li><span>//</span> Sound-mixed, licensed score</li>
         <li><span>//</span> Color graded to match the day's light</li>
-        <li><span>//</span> Delivered in 6–8 weeks, private online gallery</li>
+        <li><span>//</span> Delivered in 8–12 weeks, private online gallery</li>
       </ul>
       <p class="body-note">Exact scope varies by day length and venue — confirmed after your consult.</p>
     </section>
 
-    <!-- process -->
+    <!-- 04 · COLLECTIONS -->
     <section class="section">
       <div class="section-head">
-        <h2 class="display">Process</h2>
-        <span class="mono">Inquiry — Delivery</span>
+        <h2 class="display">Collections</h2>
+        <span class="mono">Three Ways In</span>
       </div>
-      <div class="wed-process">
-        <div class="wed-process__step reveal-up">
-          <span class="idx">01</span>
-          <h3>Inquire</h3>
-          <p>Tell us about your day using the form below.</p>
+
+      <div class="wed-collections">
+        <div class="wed-collection">
+          <div>
+            <h3 class="wed-collection__name">The Single</h3>
+            <ul class="wed-collection__list">
+            <li>1 Cinematographer</li>
+            <li>Six Hours of Coverage</li>
+            <li>3 Minute Highlight Film</li>
+            <li>Ceremony Audio, fully mixed</li>
+            <li>Ideal for intimate City Weddings and Elopements</li>
+            </ul>
+          </div>
+          <div class="wed-collection__media reveal-media">
+            <img src="assets/img/thumb-wedding.jpg" alt="Sara and Justin — an intimate city wedding filmed by 24stills" loading="lazy" decoding="async" />
+          </div>
         </div>
-        <div class="wed-process__step reveal-up">
-          <span class="idx">02</span>
-          <h3>Consult</h3>
-          <p>A short call to talk timeline, venue and coverage.</p>
+
+        <div class="wed-collection">
+          <div>
+            <h3 class="wed-collection__name">The Standard</h3>
+            <ul class="wed-collection__list">
+            <li>1 Cinematographer</li>
+            <li>8 Hours of Coverage</li>
+            <li>4–5 Minute Highlight Film</li>
+            <li>Teaser Cut for Social within 14 days</li>
+            <li>Recordings of all Speeches, Edited</li>
+            </ul>
+          </div>
+          <div class="wed-collection__media reveal-media">
+            <img src="assets/img/wed-melanie-philipp.jpg" alt="Melanie and Philipp — wedding coverage by 24stills" loading="lazy" decoding="async" />
+          </div>
         </div>
-        <div class="wed-process__step reveal-up">
-          <span class="idx">03</span>
-          <h3>Film</h3>
-          <p>We shoot unobtrusively, all day, start to finish.</p>
+
+        <div class="wed-collection">
+          <div>
+            <h3 class="wed-collection__name">The Premium</h3>
+            <ul class="wed-collection__list">
+            <li>2 Cinematographers</li>
+            <li>10 Hours of Coverage</li>
+            <li>4–5 min. Highlight Film &amp; Instagram Trailer</li>
+            <li>20–25 min. Wedding Documentary</li>
+            <li>Videos of: ceremony, first dances, all speeches &amp; vows</li>
+            <li>4K Digital Download of the final film, plus 1080p for mobile</li>
+            <li>Vows, speeches and short interviews recorded and intertwined into both films</li>
+            </ul>
+          </div>
+          <div class="wed-collection__media reveal-media">
+            <img src="assets/img/wed-lilly-andy.jpg" alt="Lilly and Andy — full-day wedding documentary by 24stills" loading="lazy" decoding="async" />
+          </div>
         </div>
-        <div class="wed-process__step reveal-up">
-          <span class="idx">04</span>
-          <h3>Edit</h3>
-          <p>Cut, colored and scored in the studio.</p>
-        </div>
-        <div class="wed-process__step reveal-up">
-          <span class="idx">05</span>
-          <h3>Deliver</h3>
-          <p>Your film, ready to watch and share.</p>
-        </div>
+
       </div>
+    </section>
+
+    <!-- 05 · ADD-ONS -->
+    <section class="section section--ink">
+      <div class="section-head">
+        <h2 class="display">Add-Ons</h2>
+        <span class="mono">Build Your Day</span>
+      </div>
+      <ul class="wed-addons">
+        <li>//Extra Hour</li>
+        <li>//Second or Third Filmmaker for Wider Coverage</li>
+        <li>//Drone Cinematography</li>
+        <li>//Super 8 or 16mm Film Layer</li>
+        <li>//Rehearsal Dinner or Welcome Party Coverage</li>
+        <li>//Vow and Letter Readings, Recorded Separately</li>
+        <li>//Full Documentary Edit of the Ceremony</li>
+        <li>//Raw Footage Archive on a Physical Drive</li>
+        <li>//All Speeches</li>
+      </ul>
     </section>
 
     <!-- inquiry form -->
@@ -175,6 +252,41 @@
           <button type="submit">Send Inquiry →</button>
         </div>
       </form>
+    </section>
+
+    <!-- 07 · QUESTIONS — placed after the inquiry section per Revision 1 -->
+    <section class="section" id="questions">
+      <div class="section-head">
+        <h2 class="display">Questions</h2>
+        <span class="mono">Good To Know</span>
+      </div>
+
+      <div class="faq">
+        <div class="faq__row">
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-1">
+            Who is filming our wedding?
+            <span class="faq__toggle" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__a" id="faq-1">
+            <div class="faq__a-inner">
+              We have an experienced team of talented, distinct cinematographers, and we make
+              sure they all match our style.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq__row">
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-2">
+            When do we get the film?
+            <span class="faq__toggle" aria-hidden="true">+</span>
+          </button>
+          <div class="faq__a" id="faq-2">
+            <div class="faq__a-inner">
+              Highlight film in eight to twelve weeks.
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
   </main>

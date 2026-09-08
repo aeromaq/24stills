@@ -20,6 +20,7 @@
   <meta property="og:title" content="Who We Are — 24stills" />
   <meta property="og:image" content="assets/img/team-benjamin.jpg" />
   <link rel="icon" type="image/png" href="assets/logos/24stills-submark.png" />
+  <link rel="apple-touch-icon" href="assets/logos/24stills-submark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -35,6 +36,8 @@
     <img class="bars__mark" src="assets/logos/24stills-submark.png" alt="" />
   </div>
 
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
     <a class="brand" href="index.html" aria-label="24stills — home">
       <img src="assets/logos/24stills-logo.png" alt="24stills" />
@@ -45,13 +48,13 @@
       <a href="index.html#services">Services</a>
       <a href="index.html#contact">Contact</a>
     </nav>
-    <button class="menu-btn" aria-label="Open menu">
+    <button class="menu-btn" type="button" aria-label="Open menu">
       <span class="menu-btn__label">Menu</span>
-      <span class="menu-btn__icon"><span></span><span></span><span></span></span>
+      <span class="menu-btn__icon" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
   </header>
 
-  <div class="menu-overlay">
+  <div class="menu-overlay" aria-hidden="true">
     <a class="menu-link" href="work.html"><span class="idx">01</span>Work</a>
     <a class="menu-link" href="about.html"><span class="idx">02</span>Who We Are</a>
     <a class="menu-link" href="index.html#services"><span class="idx">03</span>Services</a>
@@ -62,7 +65,7 @@
     </div>
   </div>
 
-  <main>
+  <main id="main">
 
     <section class="section" style="padding-top: calc(var(--header-h) + clamp(3rem, 8vw, 6rem));">
       <div class="section-head">
@@ -78,8 +81,8 @@
 
     <section class="section section--ink">
       <span class="eyebrow">02 // The Craft</span>
-      <h2 class="statement" data-reveal="lines" data-accent="genuine" style="margin-top:1.5rem;">
-        We bring that story to life — their mission, their people, their product — crafting films that feel genuine and land with the right audience.
+      <h2 class="statement" data-reveal="lines" data-accent="real" style="margin-top:1.5rem;">
+        We bring that story to life — their mission, their people, their product — crafting films that feel real and land with the right audience.
       </h2>
       <p class="body-note">
         Founded in Vienna, based in New York City. We bring a European sensibility to
@@ -95,7 +98,7 @@
 
       <div class="team-grid">
         <div class="team-card">
-          <div class="team-card__photo"><img src="assets/img/team-benjamin.jpg" alt="Benjamin Mogel, Creative Director" loading="lazy" /></div>
+          <div class="team-card__photo"><img src="assets/img/team-benjamin.jpg" alt="Benjamin Mogel, Creative Director at 24stills" loading="lazy" decoding="async" /></div>
           <h3>Benjamin</h3>
           <span class="role">Creative Director</span>
         </div>
@@ -105,7 +108,7 @@
           <span class="role">Producer</span>
         </div>
         <div class="team-card">
-          <div class="team-card__photo"><div class="placeholder" aria-hidden="true">B</div></div>
+          <div class="team-card__photo"><img src="assets/img/team-bernhard.jpg" alt="Bernhard Dangl, Cinematographer at 24stills" loading="lazy" decoding="async" /></div>
           <h3>Bernhard</h3>
           <span class="role">Cinematographer</span>
         </div>
@@ -120,7 +123,7 @@
 
     <!-- CONTACT -->
     <section class="contact" id="contact">
-      <img class="contact__bg" src="assets/img/bg-contact.jpg" alt="" aria-hidden="true" />
+      <img class="contact__bg" src="assets/img/bg-contact.jpg" alt="" aria-hidden="true" loading="lazy" />
       <span class="eyebrow">Say Hello!</span>
       <a class="contact__email" href="mailto:hello@24stills.net">hello@24stills.net</a>
       <p class="place">Brooklyn — NY</p>
@@ -134,7 +137,7 @@
       <a href="mailto:hello@24stills.net">hello@24stills.net</a>
       <div class="social">
         <a href="https://www.instagram.com/24stills_film" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/benjamin-mogel-10071990/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
     <div class="col-right">
