@@ -229,10 +229,21 @@ function featuredCard(p, depth) {
 
 /** The film block: a native <video> player, a YouTube facade, or nothing. */
 function filmBlock(p, depth) {
+  /* A click-to-load facade rather than a bare iframe: YouTube's embed pulls
+     ~1MB and sets cookies on page load, which is a poor trade on a page whose
+     film is below the fold. The poster is ours, so the tile matches the rest of
+     the site; the iframe is only created once the visitor asks for it. */
   if (p.youtube) {
     return `      <section class="section detail-film">
-        <div class="detail-film__frame">
-          <lite-youtube data-video-id="${esc(p.youtube)}" data-title="${esc(p.name)}" data-poster="${rel(p.poster, depth)}"></lite-youtube>
+        <div class="detail-film__frame detail-film__frame--yt" data-youtube="${esc(p.youtube)}" data-title="${esc(p.name)}">
+          <img class="detail-film__poster" src="${rel(p.poster, depth)}" alt="${esc(posterAlt(p))}" loading="lazy" decoding="async" />
+          <button class="detail-film__play" type="button" aria-label="Play ${esc(p.name)} on YouTube">
+            <span class="ring" aria-hidden="true"></span>
+            <span class="rec">Play Film</span>
+          </button>
+          <noscript>
+            <a href="https://www.youtube.com/watch?v=${esc(p.youtube)}" target="_blank" rel="noopener">Watch ${esc(p.name)} on YouTube</a>
+          </noscript>
         </div>
       </section>`;
   }

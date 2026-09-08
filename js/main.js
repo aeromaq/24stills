@@ -670,10 +670,36 @@ function initWorkCards() {
    ------------------------------------------------------------ */
 function initDetailFilm() {
   document.querySelectorAll(".detail-film__frame").forEach((frame) => {
-    const video = frame.querySelector("video");
     const btn = frame.querySelector(".detail-film__play");
-    if (!video || !btn) return;
+    if (!btn) return;
 
+    const ytId = frame.dataset.youtube;
+    if (ytId) {
+      /* Swap the facade for the real embed on first click, with autoplay=1 so
+         the click the visitor already made is the one that starts the film. */
+      btn.addEventListener(
+        "click",
+        () => {
+          const iframe = document.createElement("iframe");
+          iframe.className = "detail-film__embed";
+          iframe.src =
+            "https://www.youtube-nocookie.com/embed/" +
+            encodeURIComponent(ytId) +
+            "?autoplay=1&rel=0&modestbranding=1";
+          iframe.title = frame.dataset.title || "Project film";
+          iframe.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen";
+          iframe.allowFullscreen = true;
+          iframe.setAttribute("frameborder", "0");
+          frame.appendChild(iframe);
+          frame.classList.add("is-playing");
+        },
+        { once: true }
+      );
+      return;
+    }
+
+    const video = frame.querySelector("video");
+    if (!video) return;
     btn.addEventListener("click", () => {
       frame.classList.add("is-playing");
       video.play().catch(() => {});

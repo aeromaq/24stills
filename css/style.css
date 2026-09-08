@@ -1520,6 +1520,20 @@ textarea:focus-visible {
   overflow: hidden;
 }
 
+.detail-film__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-film__embed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .detail-film__video {
   width: 100%;
   height: 100%;
