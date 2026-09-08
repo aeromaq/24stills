@@ -416,6 +416,24 @@ function splitStatements() {
   });
 }
 
+/* Headline drift, at a throw the current breakpoint can actually accommodate.
+   Registered through ScrollTrigger.matchMedia so switching breakpoints tears
+   the old triggers down instead of stacking a second set on top. */
+function driftHeadlines(throwPx) {
+  document.querySelectorAll("[data-drift]").forEach((el) => {
+    const dir = el.dataset.drift === "left" ? 1 : -1;
+    gsap.fromTo(
+      el,
+      { x: throwPx * dir },
+      {
+        x: -throwPx * dir,
+        ease: "none",
+        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.6 },
+      }
+    );
+  });
+}
+
 /* ------------------------------------------------------------
    SCROLL MOTION
    ------------------------------------------------------------ */
@@ -461,18 +479,13 @@ function initScrollMotion() {
     }
   });
 
-  // oversized section headlines drift sideways as you scroll
-  document.querySelectorAll("[data-drift]").forEach((el) => {
-    const dir = el.dataset.drift === "left" ? 1 : -1;
-    gsap.fromTo(
-      el,
-      { x: 50 * dir },
-      {
-        x: -50 * dir,
-        ease: "none",
-        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.6 },
-      }
-    );
+  /* Oversized section headlines drift sideways as you scroll. The ±50px throw
+     is sized for desktop; on a 390px screen it slides the display type out past
+     the gutter, where body{overflow-x:hidden} silently clips it. Scale the
+     throw to the viewport instead of shipping one number to every breakpoint. */
+  ScrollTrigger.matchMedia({
+    "(min-width: 768px)": () => driftHeadlines(50),
+    "(max-width: 767px)": () => driftHeadlines(10),
   });
 
   // generic rise-in reveals

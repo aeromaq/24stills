@@ -1076,6 +1076,14 @@ body.menu-open .menu-btn__icon span:nth-child(3) { transform: translateY(-9px) r
 .line-mask > span { display: block; will-change: transform; }
 
 /* interstitial band — pinned push-in zoom text (echoes the preloader's camera language) */
+/* ScrollTrigger wraps a pinned band in a generated .pin-spacer that has no
+   background of its own, which lets the paper body colour show around the ink
+   band at the pin boundaries. Paint the spacer to match the band. */
+.pin-spacer:has(> .band--zoom),
+.pin-spacer--ink {
+  background: var(--ink);
+}
+
 .band--zoom {
   display: flex;
   align-items: center;
@@ -1523,7 +1531,7 @@ textarea:focus-visible {
 .detail-film__poster {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .detail-film__embed {
@@ -1537,7 +1545,11 @@ textarea:focus-visible {
 .detail-film__video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* `contain`, never `cover`: a film whose aspect isn't exactly 16:9 (a 2.35:1
+     grade, a vertical social cut) would otherwise have its edges sliced off,
+     and burnt-in subtitles are the first thing lost. The frame is already ink,
+     so letterboxing reads as intentional framing. */
+  object-fit: contain;
   background: var(--ink);
 }
 
