@@ -1464,8 +1464,13 @@ textarea:focus-visible {
   outline-offset: 3px;
 }
 
-/* ---------- logo marquee: client-requested larger marks ---------- */
-.logo-marquee__track img.logo--lg {
+/* ---------- logo marquee: client-requested larger marks ----------
+   Two hooks for the same rule: the static build uses the class, while the
+   Webflow pages carry `data-logo="lg"` — Designer elements can take custom
+   attributes freely, but applying a class there requires the style to exist
+   as a Webflow style, which these do not (they live only in this file). */
+.logo-marquee__track img.logo--lg,
+.logo-marquee__track img[data-logo="lg"] {
   height: clamp(2.6rem, 5vw, 4.2rem);
 }
 
