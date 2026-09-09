@@ -2049,7 +2049,7 @@ textarea:focus-visible {
   position: absolute;
   left: clamp(0.9rem, 2vw, 1.4rem);
   right: clamp(0.9rem, 2vw, 1.4rem);
-  bottom: calc(clamp(0.9rem, 2vw, 1.4rem) + 1.5em);
+  bottom: calc(clamp(0.9rem, 2vw, 1.4rem) + clamp(1.05rem, 2vw, 1.5rem) + 0.35rem);
   z-index: 2;
   margin: 0;
   padding: 0;
@@ -2191,7 +2191,7 @@ textarea:focus-visible {
 }
 
 [data-wed="kicker"] {
-  bottom: calc(clamp(0.9rem, 2vw, 1.4rem) + 1.5em);
+  bottom: calc(clamp(0.9rem, 2vw, 1.4rem) + clamp(1.05rem, 2vw, 1.5rem) + 0.35rem);
   font-family: var(--font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
