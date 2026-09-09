@@ -1119,12 +1119,22 @@ body.menu-open .menu-btn__icon span:nth-child(3) { transform: translateY(-9px) r
   height: 2rem;
   filter: invert(1) brightness(2);
   margin-bottom: 0.8rem;
-  /* 24stills-logo.png carries 23.2% transparent padding on its right edge, so
-     box-aligning it with the links below still reads as "the logo sits too far
-     left" (Revision 1, footer 7b). Pull the box right by that padding — at
-     height:2rem the mark renders 4.096rem wide, 23.2% of which is 0.95rem — so
-     the *visible* mark lines up with "Work / About Us / Services". */
-  margin-right: -0.95rem;
+  /* 24stills-logo.png carries transparent padding on both sides — 23.2% right,
+     25.2% left — so box-aligning it with the links below still reads as "the
+     logo sits in the wrong place" (Revision 1, footer 7b). Compensate on
+     whichever edge the column actually aligns to. At height:2rem the mark
+     renders 4.096rem wide, so those margins are 0.95rem and 1.03rem.
+
+     Below 800px the column is flex-start (see the rule above), so the *left*
+     padding is what pushes the mark out of line; from 800px up it flips. */
+  margin-left: -1.03rem;
+}
+
+@media (min-width: 800px) {
+  .site-footer .brandmark {
+    margin-left: 0;
+    margin-right: -0.95rem;
+  }
 }
 
 .site-footer p,
