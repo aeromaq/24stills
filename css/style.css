@@ -2082,3 +2082,118 @@ textarea:focus-visible {
 
 /* the hover chip competes with the label in a dense grid */
 .work-grid .work-card__hint { display: none; }
+
+/* ============================================================
+   LEGACY WEBFLOW COMPATIBILITY — wedding films raster.
+
+   Revision 1 asked for "a raster with all the videos, similar style to the
+   work section" on the wedding page. The section is built in the Designer
+   from plain elements carrying `data-wed` hooks rather than classes: `mono`
+   and `display` are not registered Webflow styles on this site (they arrive
+   with the imported markup), so the Designer cannot apply them to newly
+   created elements. Attributes always bind, so the styling lives here.
+
+   Mirrors the .mosaic / .work-grid treatment so the two read as one system.
+   ============================================================ */
+[data-wed-raster] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+[data-wed-raster] .section-head {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+[data-wed="head"] {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  font-size: clamp(2.4rem, 9vw, 7rem);
+}
+
+[data-wed="sub"] {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+[data-wed="grid"] {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  background: var(--ink);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+@media (min-width: 640px) {
+  [data-wed="grid"] { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1000px) {
+  [data-wed="grid"] { grid-template-columns: repeat(3, 1fr); }
+}
+
+[data-wed="tile"] {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+[data-wed="tile"] img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+[data-wed="tile"]:hover img { transform: scale(1.06); }
+
+/* legibility scrim behind the label only */
+[data-wed="tile"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 62%;
+  background: linear-gradient(
+    to top,
+    rgba(11, 11, 11, 0.94) 0%,
+    rgba(11, 11, 11, 0.72) 35%,
+    rgba(11, 11, 11, 0) 100%
+  );
+  pointer-events: none;
+}
+
+[data-wed="kicker"],
+[data-wed="name"] {
+  position: absolute;
+  left: clamp(0.9rem, 2vw, 1.4rem);
+  right: clamp(0.9rem, 2vw, 1.4rem);
+  z-index: 2;
+}
+
+[data-wed="kicker"] {
+  bottom: calc(clamp(0.9rem, 2vw, 1.4rem) + 1.5em);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ff6a4d;
+}
+
+[data-wed="name"] {
+  bottom: clamp(0.9rem, 2vw, 1.4rem);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  line-height: 1;
+  color: var(--paper);
+}
