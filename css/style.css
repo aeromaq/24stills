@@ -2057,16 +2057,26 @@ textarea:focus-visible {
   gap: 0.6rem;
 }
 
-.work-grid .work-card__meta .mono {
+.work-grid .work-card__meta .mono,
+.work-grid .work-card__meta [data-wf-mono] {
   color: #ff6a4d;
   font-size: 0.62rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 /* the format label is the "less text" Revision 1 asked to lose — the client
-   name and film title carry the tile on their own. */
-.work-grid .work-card__meta .mono:first-child { display: none; }
+   name and film title carry the tile on their own. Matched by position, since
+   cards added through the Designer can't carry the `mono` class. */
+.work-grid .work-card__meta > *:first-child { display: none; }
 
 .work-grid .work-card__title {
+  /* not inherited from `.display`: Designer-created headings can't take it */
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
   position: absolute;
   left: clamp(0.9rem, 2vw, 1.4rem);
   right: clamp(0.9rem, 2vw, 1.4rem);
