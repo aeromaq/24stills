@@ -747,6 +747,265 @@ function initDetailFilm() {
   });
 }
 
+/* ============================================================
+   LEGACY WEBFLOW COMPATIBILITY — the "netflix effect" overlay.
+
+   The static build ships work cards as <a> links to /work/<slug>/. The live
+   Webflow site is still the pre-revision Designer build: <button
+   class="work-card" data-project="…"> plus a single .project-overlay
+   container, with no detail pages to link to. Both load this one file from
+   jsDelivr, so removing the overlay outright would leave every work card on
+   the published site a dead click until the Designer is rebuilt
+   (WEBFLOW-BUILD.md §6/§6b).
+
+   So the overlay stays, activated only when that legacy markup is present.
+   Delete this whole section once the Webflow pages are rebuilt as links.
+   ============================================================ */
+
+const PROJECTS = {
+  dzbank: {
+    brand: "DZ BANK",
+    title: "50 Years DZ Bank New York",
+    format: "Image Film",
+    media: { type: "image", src: "assets/img/thumb-dzbank.jpg" },
+    desc:
+      "A milestone worth remembering. To mark 50 years of DZ Bank in New York, we crafted a short film that traces the bank's history in the city — part time capsule, part tribute, told through the people who were there.",
+  },
+  horvath: {
+    brand: "HORVÁTH",
+    title: "High-Performance Leadership Event",
+    format: "Event Film",
+    media: { type: "image", src: "assets/img/thumb-horvath.jpg" },
+    desc:
+      "Horváth, an international management consultancy, brought their first leadership event to New York City. We captured the energy of the day through conversations with speakers from Hugo Boss, Stanford, and the NBA — letting their words tell the story of what made it worth being there.",
+  },
+  violife: {
+    brand: "VIOLIFE",
+    title: "Undairy the Craving",
+    format: "Brand Experience",
+    media: { type: "image", src: "assets/logos/client-violife.png", tile: true },
+    desc:
+      "For Violife, 24stills produced video content around a New York City brand experience — following the crew across the city as people had Violife products delivered right to them.",
+  },
+  tagheuer: {
+    brand: "TAG HEUER",
+    title: "One Night in NYC",
+    format: "Brand Documentary",
+    media: { type: "video", src: "assets/video/preview-tagheuer.mp4", poster: "assets/img/thumb-tagheuer.jpg" },
+    desc:
+      "Hodinkee and TAG Heuer hosted an intimate dinner celebrating the launch of the limited edition Carrera Chronograph Seafarer x Hodinkee and the brand's rich history of 'Decades at Sea.' We supported the evening from concept to delivery — planning the content, filming on-site, and producing assets tailored for release across channels.",
+  },
+  huebner: {
+    brand: "HÜBNER",
+    title: "Process Harmonization",
+    format: "Corporate Documentary",
+    media: { type: "video", src: "assets/video/preview-huebner.mp4", poster: "assets/img/thumb-huebner.jpg" },
+    desc:
+      "A corporate documentary following Hübner's process harmonization journey — real people, real change, told from inside the organization.",
+  },
+  roehm: {
+    brand: "RÖHM",
+    title: "Customer Project: Röhm",
+    format: "Corporate Documentary",
+    media: { type: "video", src: "assets/video/preview-roehm.mp4", poster: "assets/img/thumb-roehm.jpg" },
+    desc:
+      "An inside look at the EMPLEOX customer project with Röhm — a corporate documentary capturing collaboration between teams as it actually happens.",
+  },
+  cycling: {
+    brand: "PASSION CYCLING",
+    title: "Passion Cycling",
+    format: "Commercial",
+    media: { type: "image", src: "assets/img/thumb-cycling.jpg" },
+    desc:
+      "A commercial built around the pure feeling of riding — pace, sweat and asphalt. Shot to move as fast as its subject.",
+  },
+};
+
+function buildOverlayMedia(mediaBox, data) {
+  mediaBox.querySelectorAll("video, img, .tile, .project-overlay__play").forEach((n) => n.remove());
+
+  let media;
+  if (data.media.type === "video") {
+    media = document.createElement("video");
+    media.src = data.media.src;
+    media.poster = data.media.poster || "";
+    media.controls = false;
+    media.loop = true;
+    media.playsInline = true;
+    media.preload = "none";
+  } else if (data.media.tile) {
+    media = document.createElement("div");
+    media.className = "tile";
+    media.style.cssText =
+      "width:100%;height:100%;background:var(--accent);display:flex;align-items:center;justify-content:center;";
+    const img = document.createElement("img");
+    img.src = data.media.src;
+    img.alt = data.brand;
+    img.style.cssText = "width:50%;height:auto;object-fit:contain;filter:brightness(0);";
+    media.appendChild(img);
+  } else {
+    media = document.createElement("img");
+    media.src = data.media.src;
+    media.alt = `${data.brand} — ${data.title}`;
+  }
+  mediaBox.prepend(media);
+
+  // custom player: poster + centered play button — only for pieces with an actual film
+  if (data.media.type === "video") {
+    const play = document.createElement("button");
+    play.type = "button";
+    play.className = "project-overlay__play";
+    play.setAttribute("aria-label", `Play ${data.title}`);
+    play.innerHTML = '<span class="ring" aria-hidden="true"></span><span class="rec">Play Film</span>';
+    play.addEventListener("click", () => {
+      const overlay = document.querySelector(".project-overlay");
+      media.controls = true;
+      media.play().catch(() => {});
+      overlay.classList.add("is-playing");
+    });
+    mediaBox.appendChild(play);
+  }
+}
+
+let overlayAnimating = false;
+
+/* Resolve the data that fills the overlay. Prefers CMS-friendly data-*
+   attributes written onto the card (so a CMS such as Webflow can manage
+   projects without editing this file); falls back to the built-in PROJECTS
+   map used by the hand-coded static build. Expected card attributes:
+   data-brand, data-format, data-title, data-desc, data-media-type
+   ("video"|"image"), data-media-src, data-poster, data-tile ("true"). */
+/* Second CMS wiring option: read the value out of a child element marked
+   data-field="<name>". <img> yields its src, <a> its href, anything else its
+   text. Binding text/image/link elements is well supported in every CMS,
+   whereas binding values into custom attributes is not always possible —
+   so this exists as the reliable alternative to the data-* route. */
+function fieldValue(cardEl, name) {
+  const el = cardEl.querySelector('[data-field="' + name + '"]');
+  if (!el) return "";
+  if (el.tagName === "IMG") return el.getAttribute("src") || "";
+  if (el.tagName === "A") return el.getAttribute("href") || "";
+  return el.textContent.trim();
+}
+
+function getProjectData(key, cardEl) {
+  if (cardEl) {
+    const d = cardEl.dataset;
+    const src = d.mediaSrc || fieldValue(cardEl, "media");
+    if (src) {
+      const titleEl = cardEl.querySelector(".work-card__title");
+      return {
+        brand: d.brand || fieldValue(cardEl, "brand"),
+        format: d.format || fieldValue(cardEl, "format"),
+        title:
+          d.title ||
+          fieldValue(cardEl, "title") ||
+          (titleEl ? titleEl.textContent.trim() : ""),
+        desc: d.desc || fieldValue(cardEl, "desc"),
+        media: {
+          type: d.mediaType || fieldValue(cardEl, "mediaType") || "image",
+          src: src,
+          poster: d.poster || fieldValue(cardEl, "poster"),
+          tile: (d.tile || fieldValue(cardEl, "tile")) === "true",
+        },
+      };
+    }
+  }
+  return PROJECTS[key] || null;
+}
+
+function openProject(key, cardEl) {
+  if (overlayAnimating) return;
+  const data = getProjectData(key, cardEl);
+  if (!data) return;
+
+  const overlay = document.querySelector(".project-overlay");
+  if (!overlay || overlay.classList.contains("open")) return;
+  const mediaBox = overlay.querySelector(".project-overlay__media");
+  const brand = overlay.querySelector(".project-overlay__brand");
+  const title = overlay.querySelector(".project-overlay__title");
+  const desc = overlay.querySelector(".project-overlay__desc");
+  const bar = overlay.querySelector(".project-overlay__bar");
+
+  // netflix sequence: bars CLOSE over the page first, the project content
+  // swaps in while the screen is fully covered, then the bars part to
+  // reveal it — the overlay must never pop in before the bars have met.
+  overlayAnimating = true;
+  const d1 = reducedMotion ? 0.01 : 0.42;
+  const d2 = reducedMotion ? 0.01 : 0.55;
+  gsap
+    .timeline({ onComplete: () => (overlayAnimating = false) })
+    .add(coverBars({ duration: d1, withMark: true }))
+    .add(() => {
+      buildOverlayMedia(mediaBox, data);
+      brand.textContent = `${data.brand} // ${data.format}`;
+      title.textContent = data.title;
+      desc.textContent = data.desc;
+      overlay.classList.remove("is-playing");
+      overlay.classList.add("open");
+      document.body.style.overflow = "hidden";
+      gsap.set(bar, { opacity: 0, yPercent: 24 });
+    })
+    .add(uncoverBars({ duration: d2, withMark: true }), "+=0.12")
+    .fromTo(bar, { opacity: 0, yPercent: 24 }, { opacity: 1, yPercent: 0, duration: 0.4, ease: "power3.out" }, "-=0.3");
+}
+
+function closeProject() {
+  if (overlayAnimating) return;
+  const overlay = document.querySelector(".project-overlay");
+  if (!overlay || !overlay.classList.contains("open")) return;
+  const bar = overlay.querySelector(".project-overlay__bar");
+  const d1 = reducedMotion ? 0.01 : 0.42;
+  const d2 = reducedMotion ? 0.01 : 0.55;
+
+  overlayAnimating = true;
+  gsap
+    .timeline({ onComplete: () => (overlayAnimating = false) })
+    .to(bar, { opacity: 0, yPercent: 16, duration: 0.2, ease: "power2.in" })
+    .add(coverBars({ duration: d1 }), "-=0.05")
+    .add(() => {
+      overlay.classList.remove("open", "is-playing");
+      overlay.querySelectorAll("video").forEach((v) => v.pause());
+      document.body.style.overflow = "";
+    })
+    .add(uncoverBars({ duration: d2 }), "+=0.02");
+}
+
+function initOverlayClose() {
+  const overlay = document.querySelector(".project-overlay");
+  if (!overlay) return;
+  overlay.querySelector(".project-overlay__close").addEventListener("click", closeProject);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("open")) closeProject();
+  });
+}
+
+/* A legacy card is one that carries `data-project` but doesn't actually point
+   anywhere: Webflow's Designer renders these as <a href="#"> (a link block with
+   no page set) or as <button>. Cards in the new build point at /work/<slug>/,
+   so they never match and keep their plain navigation. */
+function legacyCards() {
+  return [...document.querySelectorAll("[data-project]")].filter((el) => {
+    if (!el.classList.contains("work-card") && !el.classList.contains("mosaic__item")) return false;
+    const href = el.getAttribute("href");
+    return !href || href === "#";
+  });
+}
+
+function initLegacyOverlay() {
+  if (!document.querySelector(".project-overlay")) return;
+  const cards = legacyCards();
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      e.preventDefault(); // href="#" would otherwise jump the page to the top
+      openProject(card.dataset.project, card);
+    });
+  });
+  initOverlayClose();
+}
+
 /* ------------------------------------------------------------
    SERVICES accordion
    ------------------------------------------------------------ */
@@ -867,6 +1126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initWorkCards();
   initHeroVideo();
   initDetailFilm();
+  initLegacyOverlay();
   initServices();
   initFaq();
   initRefreshTriggers();
