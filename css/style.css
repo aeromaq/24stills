@@ -1468,10 +1468,22 @@ textarea:focus-visible {
    Two hooks for the same rule: the static build uses the class, while the
    Webflow pages carry `data-logo="lg"` — Designer elements can take custom
    attributes freely, but applying a class there requires the style to exist
-   as a Webflow style, which these do not (they live only in this file). */
+   as a Webflow style, which these do not (they live only in this file).
+
+   These three files are alpha-trimmed (see assets/logos), so `height` is the
+   height of the *visible* mark. That matters: untrimmed, Rock & Roll's artwork
+   filled 23% of its canvas, so scaling the box up actually rendered it smaller
+   than the marks it was supposed to tower over. */
 .logo-marquee__track img.logo--lg,
 .logo-marquee__track img[data-logo="lg"] {
-  height: clamp(2.6rem, 5vw, 4.2rem);
+  /* ~46px on desktop against ~20px for the untrimmed marks and ~35px of
+     wordmark cap height — unmistakably the largest in the row. */
+  height: clamp(2rem, 3.4vw, 2.9rem);
+  /* Rock & Roll is a 4:1 banner; without a width cap it would run away with
+     the row. `contain` guarantees no mark is ever distorted. */
+  max-width: clamp(9rem, 15vw, 13rem);
+  object-fit: contain;
+  opacity: 1;
 }
 
 /* ============================================================
