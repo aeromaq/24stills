@@ -483,8 +483,12 @@ function initScrollMotion() {
      is sized for desktop; on a 390px screen it slides the display type out past
      the gutter, where body{overflow-x:hidden} silently clips it. Scale the
      throw to the viewport instead of shipping one number to every breakpoint. */
+  /* Three tiers, not two: at tablet widths the display type is still large but
+     the gutter is not, so the full desktop throw pushed headings past the edge
+     where body{overflow-x:hidden} clipped them. */
   ScrollTrigger.matchMedia({
-    "(min-width: 768px)": () => driftHeadlines(50),
+    "(min-width: 1000px)": () => driftHeadlines(50),
+    "(min-width: 768px) and (max-width: 999px)": () => driftHeadlines(22),
     "(max-width: 767px)": () => driftHeadlines(10),
   });
 
