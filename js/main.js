@@ -1011,6 +1011,73 @@ function initLegacyOverlay() {
 }
 
 /* ------------------------------------------------------------
+   WEBFLOW WORK DETAIL — build the player from bound CMS fields.
+
+   The Webflow collection template can't put a CMS value into an element
+   attribute (the API rejects attribute value bindings for these field types),
+   so the page carries hidden spans whose *text* is bound instead — the
+   `[data-field]` fallback this project already documents. This reads them and
+   renders the same poster-first player the static build uses.
+   ------------------------------------------------------------ */
+function initWebflowDetailFilm() {
+  const host = document.querySelector('[data-wfd="film"]');
+  if (!host) return;
+
+  const read = (name) => {
+    const el = host.querySelector('[data-field="' + name + '"]');
+    return el ? el.textContent.trim() : "";
+  };
+
+  const src = read("media");
+  const youtube = read("youtube");
+  const title = read("title") || "this project";
+  /* Media type is authoritative when set; fall back to the file extension so a
+     project is never mis-rendered just because the option was left blank. */
+  const declared = read("mediaType").toLowerCase();
+  const isVideo = declared === "video" || (!declared && /\.(mp4|webm|mov)(\?|$)/i.test(src));
+
+  if (!youtube && !isVideo) return; // stills-only project: the hero carries it
+
+  const poster = document.querySelector('[data-wfd="hero-bg"]');
+  const frame = document.createElement("div");
+  frame.className = "detail-film__frame";
+
+  if (youtube) {
+    frame.classList.add("detail-film__frame--yt");
+    frame.dataset.youtube = youtube;
+    frame.dataset.title = title;
+    if (poster && poster.currentSrc) {
+      const img = document.createElement("img");
+      img.className = "detail-film__poster";
+      img.src = poster.currentSrc;
+      img.alt = "";
+      frame.appendChild(img);
+    }
+  } else {
+    const video = document.createElement("video");
+    video.className = "detail-film__video";
+    video.src = src;
+    if (poster && poster.currentSrc) video.poster = poster.currentSrc;
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = "none";
+    video.setAttribute("aria-label", title + " \u2014 film by 24stills");
+    frame.appendChild(video);
+  }
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "detail-film__play";
+  btn.setAttribute("aria-label", "Play " + title);
+  btn.innerHTML = '<span class="ring" aria-hidden="true"></span><span class="rec">Play Film</span>';
+  frame.appendChild(btn);
+
+  host.prepend(frame);
+  host.classList.add("has-film");
+  initDetailFilm(); // wires the play button, YouTube facade included
+}
+
+/* ------------------------------------------------------------
    SERVICES accordion
    ------------------------------------------------------------ */
 function initServices() {
@@ -1130,6 +1197,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initWorkCards();
   initHeroVideo();
   initDetailFilm();
+  initWebflowDetailFilm();
   initLegacyOverlay();
   initServices();
   initFaq();

@@ -2365,3 +2365,11 @@ textarea:focus-visible {
   color: var(--ink);
   border-color: var(--ink);
 }
+
+/* Webflow detail film block — reuses the static build's player styling. */
+[data-wfd="film"] { display: none; }
+[data-wfd="film"].has-film {
+  display: block;
+  padding: clamp(3rem, 7vw, 5rem) var(--gutter) 0;
+}
+[data-wfd="fields"] { display: none; }
