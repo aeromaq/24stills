@@ -2219,3 +2219,149 @@ textarea:focus-visible {
   line-height: 1;
   color: var(--paper);
 }
+
+/* ============================================================
+   WEBFLOW WORK DETAIL TEMPLATE  (/work-projects/<slug>)
+
+   The Webflow collection page for "Work Projects". Built from plain elements
+   carrying `data-wfd` hooks with their text bound to CMS fields — the same
+   reason as the wedding raster: `mono` and `display` are not registered
+   Webflow styles here, so the Designer cannot apply them to new elements.
+
+   Deliberately mirrors the static build's work/<slug>/ template so a project
+   page reads identically whichever build serves it.
+   ============================================================ */
+[data-wfd="hero"] {
+  position: relative;
+  min-height: 68svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--ink);
+  padding: calc(var(--header-h) + clamp(3rem, 8vw, 6rem)) var(--gutter) clamp(3rem, 8vw, 6rem);
+}
+
+[data-wfd="hero-bg"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+/* the hero copy sits over whichever still the project supplies, so it gets
+   its own gradient rather than relying on that image being dark */
+[data-wfd="hero"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 75%;
+  background: linear-gradient(to top, rgba(11, 11, 11, 0.9), rgba(11, 11, 11, 0));
+  pointer-events: none;
+}
+
+[data-wfd="hero-inner"] {
+  position: relative;
+  z-index: 2;
+  max-width: 60rem;
+  color: var(--paper);
+}
+
+[data-wfd="eyebrow"] {
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 1.4vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #ff6a4d;
+}
+
+[data-wfd="title"] {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  font-size: clamp(2.4rem, 8vw, 6.5rem);
+  color: var(--paper);
+  margin: 0.6rem 0 1rem;
+}
+
+[data-wfd="lede"] {
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  max-width: 46ch;
+  color: rgba(232, 230, 225, 0.86);
+}
+
+[data-wfd="body"] {
+  padding: clamp(3rem, 9vw, 7rem) var(--gutter);
+}
+
+[data-wfd="grid"] {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+@media (min-width: 900px) {
+  [data-wfd="grid"] { grid-template-columns: 1.5fr 1fr; }
+}
+
+[data-wfd="kick"] {
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 1.4vw, 0.8rem);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+[data-wfd="copy"] {
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  line-height: 1.5;
+  max-width: 48ch;
+}
+
+[data-wfd="credits"] { align-content: start; }
+
+[data-wfd="row"] {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 2px solid var(--line);
+}
+
+[data-wfd="row"]:last-child { border-bottom: 2px solid var(--line); }
+
+[data-wfd="dt"] {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+[data-wfd="row"] span:not([data-wfd="dt"]) { font-size: 0.95rem; }
+
+/* a row whose CMS field is empty would otherwise show a stray label */
+[data-wfd="row"]:has(span:not([data-wfd="dt"]):empty) { display: none; }
+
+[data-wfd="back"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 2.2rem);
+  text-transform: uppercase;
+  border: 2px solid currentColor;
+  padding: 0.8rem 1.5rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+[data-wfd="back"]:hover {
+  background: var(--accent);
+  color: var(--ink);
+  border-color: var(--ink);
+}
