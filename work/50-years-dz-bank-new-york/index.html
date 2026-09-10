@@ -35,13 +35,14 @@
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "CreativeWork",
+  "@type": "VideoObject",
   "name": "50 Years DZ Bank New York",
   "description": "A short film marking 50 years of DZ Bank in New York, told through the people who were there.",
-  "image": "https://www.24stills.net/assets/img/thumb-dzbank.jpg",
+  "thumbnailUrl": "https://www.24stills.net/assets/img/thumb-dzbank.jpg",
+  "contentUrl": "https://www.24stills.net/assets/video/preview-dzbank.mp4",
   "url": "https://www.24stills.net/work/50-years-dz-bank-new-york/",
   "genre": "Image Film",
-  "creator": {
+  "productionCompany": {
     "@type": "Organization",
     "name": "24stills LLC",
     "url": "https://www.24stills.net"
@@ -138,7 +139,17 @@
       </div>
     </section>
 
-
+      <section class="section detail-film">
+        <div class="detail-film__frame">
+          <video class="detail-film__video" src="../../assets/video/preview-dzbank.mp4" poster="../../assets/img/thumb-dzbank.jpg"
+                 preload="none" playsinline controls
+                 aria-label="50 Years DZ Bank New York — film by 24stills"></video>
+          <button class="detail-film__play" type="button" aria-label="Play 50 Years DZ Bank New York">
+            <span class="ring" aria-hidden="true"></span>
+            <span class="rec">Play Film</span>
+          </button>
+        </div>
+      </section>
 
     <!-- 02 · DESCRIPTION + METADATA -->
     <section class="section detail-body">
@@ -213,9 +224,9 @@
 
     <!-- PREV / NEXT -->
     <nav class="detail-nav" aria-label="Project navigation">
-      <a class="detail-nav__link detail-nav__link--prev" href="../../work/passion-cycling/">
+      <a class="detail-nav__link detail-nav__link--prev" href="../../work/the-handcrafted-art-of-signs/">
         <span class="mono">← Previous</span>
-        <span class="display">Passion Cycling</span>
+        <span class="display">The Handcrafted Art of Signs</span>
       </a>
       <a class="detail-nav__link detail-nav__link--next" href="../../work/one-night-in-nyc/">
         <span class="mono">Next →</span>

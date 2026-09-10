@@ -19,11 +19,15 @@
       "format": "Image Film",
       "year": "2025",
       "location": "New York, NY",
-      "services": ["Creative Direction", "Production", "Post-Production"],
-      "mediaType": "image",
-      "media": "assets/img/thumb-dzbank.jpg",
+      "services": [
+        "Creative Direction",
+        "Production",
+        "Post-Production"
+      ],
+      "mediaType": "video",
+      "media": "assets/video/preview-dzbank.mp4",
       "poster": "assets/img/thumb-dzbank.jpg",
-      "hoverLoop": null,
+      "hoverLoop": "assets/video/loop-dzbank.mp4",
       "youtube": null,
       "shortDescription": "A short film marking 50 years of DZ Bank in New York, told through the people who were there.",
       "description": "A milestone worth remembering. To mark 50 years of DZ Bank in New York, we crafted a short film that traces the bank's history in the city — part time capsule, part tribute, told through the people who were there.",
@@ -41,7 +45,12 @@
       "format": "Brand Documentary",
       "year": "2025",
       "location": "New York, NY",
-      "services": ["Concept", "Production", "Post-Production", "Social Cut Downs"],
+      "services": [
+        "Concept",
+        "Production",
+        "Post-Production",
+        "Social Cut Downs"
+      ],
       "mediaType": "video",
       "media": "assets/video/preview-tagheuer.mp4",
       "poster": "assets/img/thumb-tagheuer.jpg",
@@ -63,7 +72,11 @@
       "format": "Event Film",
       "year": "2025",
       "location": "New York, NY",
-      "services": ["Event Coverage", "Interviews", "Post-Production"],
+      "services": [
+        "Event Coverage",
+        "Interviews",
+        "Post-Production"
+      ],
       "mediaType": "image",
       "media": "assets/img/thumb-horvath.jpg",
       "poster": "assets/img/thumb-horvath.jpg",
@@ -85,7 +98,11 @@
       "format": "Brand Experience",
       "year": "2025",
       "location": "New York, NY",
-      "services": ["Production", "Post-Production", "Social Cut Downs"],
+      "services": [
+        "Production",
+        "Post-Production",
+        "Social Cut Downs"
+      ],
       "mediaType": "image",
       "media": "assets/img/thumb-violife.jpg",
       "poster": "assets/img/thumb-violife.jpg",
@@ -107,7 +124,11 @@
       "format": "Event Film",
       "year": "2025",
       "location": "New York, NY",
-      "services": ["Event Coverage", "Production", "Post-Production"],
+      "services": [
+        "Event Coverage",
+        "Production",
+        "Post-Production"
+      ],
       "mediaType": "image",
       "media": "assets/img/thumb-dzbank-summit.jpg",
       "poster": "assets/img/thumb-dzbank-summit.jpg",
@@ -115,7 +136,9 @@
       "youtube": null,
       "shortDescription": "An event film from the summit marking DZ Bank's 50th year in New York.",
       "description": "A summit to mark half a century of DZ Bank in New York — the conversations, the room, and the people who built the anniversary into something worth filming.",
-      "gallery": ["assets/img/bts-dzbank.jpg"],
+      "gallery": [
+        "assets/img/bts-dzbank.jpg"
+      ],
       "seoTitle": "DZ Bank: A Summit for 50 Years — Event Film | 24stills",
       "seoDescription": "An event film covering the summit marking 50 years of DZ Bank in New York. Filmed and edited by 24stills."
     },
@@ -129,7 +152,11 @@
       "format": "Corporate Documentary",
       "year": "2024",
       "location": "Kassel, Germany",
-      "services": ["Concept", "Production", "Post-Production"],
+      "services": [
+        "Concept",
+        "Production",
+        "Post-Production"
+      ],
       "mediaType": "video",
       "media": "assets/video/preview-huebner.mp4",
       "poster": "assets/img/thumb-huebner.jpg",
@@ -151,7 +178,11 @@
       "format": "Corporate Documentary",
       "year": "2024",
       "location": "Darmstadt, Germany",
-      "services": ["Concept", "Production", "Post-Production"],
+      "services": [
+        "Concept",
+        "Production",
+        "Post-Production"
+      ],
       "mediaType": "video",
       "media": "assets/video/preview-roehm.mp4",
       "poster": "assets/img/thumb-roehm.jpg",
@@ -173,7 +204,11 @@
       "format": "Commercial",
       "year": "2023",
       "location": "Vienna, Austria",
-      "services": ["Concept", "Cinematography", "Post-Production"],
+      "services": [
+        "Concept",
+        "Cinematography",
+        "Post-Production"
+      ],
       "mediaType": "image",
       "media": "assets/img/thumb-cycling.jpg",
       "poster": "assets/img/thumb-cycling.jpg",
@@ -184,10 +219,46 @@
       "gallery": [],
       "seoTitle": "Passion Cycling — Commercial | 24stills",
       "seoDescription": "A cycling commercial built around pace, sweat and asphalt — shot to move as fast as its subject. Directed and produced by 24stills."
+    },
+    {
+      "slug": "the-handcrafted-art-of-signs",
+      "order": 9,
+      "featured": false,
+      "name": "The Handcrafted Art of Signs",
+      "brand": "VAN ZEE SIGNS",
+      "client": "Van Zee Signs",
+      "format": "Brand Documentary",
+      "year": "",
+      "location": "",
+      "services": [
+        "Concept",
+        "Production",
+        "Post-Production"
+      ],
+      "mediaType": "video",
+      "media": "assets/video/preview-vanzee.mp4",
+      "poster": "assets/img/thumb-vanzee.jpg",
+      "hoverLoop": "assets/video/loop-vanzee.mp4",
+      "youtube": null,
+      "shortDescription": "A brand documentary on the craft behind hand-made signage.",
+      "description": "PLACEHOLDER COPY — the client supplied the film and thumbnail for this project but no write-up. Replace with Ben's own description before publishing.",
+      "gallery": [],
+      "seoTitle": "The Handcrafted Art of Signs — Van Zee Signs | 24stills",
+      "seoDescription": "A brand documentary for Van Zee Signs on the craft behind hand-made signage. Produced by 24stills."
     }
   ],
   "pendingProjects": {
-    "$comment": "Requested by the client in Revision 1 but no film or thumbnail was supplied in 'additional assets'. Add a full entry to `projects` above once the media arrives.",
-    "items": ["GACC", "GISNY", "EUROSPINE 2025", "ONE HXM", "PACE OF NY", "MORE TIME FOR PEOPLE // IMAGE FILM"]
+    "$comment": "Films confirmed present in the client Drive (ASSETS/VIDEO Projects) but not yet fetched — Google rate-limited the transfer. Add full entries once the files are pulled.",
+    "readyInDrive": [
+      "GACC STEP USA_V4",
+      "GISNY - Imagespot_V1",
+      "EUROSPINE 2025 - Aftermovie_V1",
+      "One HXM Spot_V3",
+      "Pace Of NYC_V2"
+    ],
+    "stillMissing": [
+      "MORE TIME FOR PEOPLE // IMAGE FILM",
+      "DZ Bank: A Summit for 50 Years (video — the Drive folder is empty)"
+    ]
   }
 }

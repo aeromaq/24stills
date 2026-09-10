@@ -605,8 +605,21 @@ body.menu-open .menu-btn__icon span:nth-child(3) { transform: translateY(-9px) r
 .logo-marquee__track img {
   height: clamp(1.4rem, 3vw, 2.2rem);
   width: auto;
+  /* Client logos arrive at wildly different aspect ratios — Hodinkee is 8.5:1,
+     All For One is a near-square stacked lockup. Sizing on height alone let the
+     wide ones run away with the row, so cap the width too and let `contain`
+     shrink them to fit rather than distort. */
+  max-width: clamp(6.5rem, 11vw, 9.5rem);
+  object-fit: contain;
   filter: brightness(0) invert(1);
   opacity: 0.9;
+}
+
+/* Stacked lockups (brandmark over claim) are roughly square, so height-based
+   sizing renders them far smaller than the wordmarks beside them. Give them
+   more height to land at a comparable optical weight. */
+.logo-marquee__track img.logo--tall {
+  height: clamp(2.1rem, 4.4vw, 3.4rem);
 }
 
 .logo-marquee__track .wordmark {
