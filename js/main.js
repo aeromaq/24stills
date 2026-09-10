@@ -15,6 +15,7 @@ if (QA) {
     "*,*::before,*::after{animation:none !important;transition:none !important}" +
     ".grain{display:none}.preloader{display:none}.bars{display:none !important}" +
     ".reveal-up{opacity:1;transform:none}.reveal-media{clip-path:none}" +
+    ".mosaic__item{opacity:1 !important;transform:none !important}" +
     ".statement .word{opacity:1}.hero__meta{opacity:1}" +
     ".team-card{opacity:1 !important;transform:none !important}" +
     '.statement[data-reveal="tracking"]{opacity:1 !important;letter-spacing:normal !important}' +
@@ -1078,6 +1079,37 @@ function initWebflowDetailFilm() {
 }
 
 /* ------------------------------------------------------------
+   WEDDING FILMS — play in place.
+
+   Wedding films have no detail pages of their own (they aren't CMS projects),
+   so a tile swaps itself for a player on click rather than navigating. Hover
+   loops come free from initWorkCards, which already treats .mosaic__item.
+   ------------------------------------------------------------ */
+function initWeddingFilms() {
+  document.querySelectorAll(".wed-film").forEach((tile) => {
+    tile.addEventListener("click", () => {
+      if (tile.classList.contains("is-playing")) return;
+      const media = tile.querySelector(".mosaic__media");
+      const poster = tile.querySelector("img");
+      if (!media) return;
+
+      const video = document.createElement("video");
+      video.className = "wed-film__video";
+      video.src = tile.dataset.film;
+      if (poster) video.poster = poster.currentSrc || poster.src;
+      video.controls = true;
+      video.playsInline = true;
+      video.setAttribute("aria-label", (tile.dataset.filmTitle || "Wedding film") + " — by 24stills");
+
+      media.querySelectorAll("video").forEach((v) => v.remove()); // drop the hover loop
+      media.appendChild(video);
+      tile.classList.add("is-playing");
+      video.play().catch(() => {});
+    });
+  });
+}
+
+/* ------------------------------------------------------------
    SERVICES accordion
    ------------------------------------------------------------ */
 function initServices() {
@@ -1198,6 +1230,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroVideo();
   initDetailFilm();
   initWebflowDetailFilm();
+  initWeddingFilms();
   initLegacyOverlay();
   initServices();
   initFaq();
