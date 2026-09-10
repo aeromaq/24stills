@@ -33,7 +33,9 @@
       "description": "A milestone worth remembering. To mark 50 years of DZ Bank in New York, we crafted a short film that traces the bank's history in the city — part time capsule, part tribute, told through the people who were there.",
       "gallery": [],
       "seoTitle": "50 Years DZ Bank New York — Image Film by 24stills",
-      "seoDescription": "An image film marking 50 years of DZ Bank in New York — a time capsule and tribute told through the people who were there. Produced by 24stills."
+      "seoDescription": "An image film marking 50 years of DZ Bank in New York — a time capsule and tribute told through the people who were there. Produced by 24stills.",
+      "film": "https://cdn.prod.website-files.com/6a4e8971956394aae821fd02/6aa29f198cc796f9dec35133_film-50-years-dz-bank-new-york.mp4",
+      "filmDuration": "PT3M35S"
     },
     {
       "slug": "one-night-in-nyc",
@@ -60,7 +62,9 @@
       "description": "Hodinkee and TAG Heuer hosted an intimate dinner celebrating the launch of the limited edition Carrera Chronograph Seafarer x Hodinkee and the brand's rich history of 'Decades at Sea.' We supported the evening from concept to delivery — planning the content, filming on-site, and producing assets tailored for release across channels.",
       "gallery": [],
       "seoTitle": "One Night in NYC — TAG Heuer x Hodinkee Brand Documentary | 24stills",
-      "seoDescription": "A brand documentary for TAG Heuer and Hodinkee, filmed at the Carrera Chronograph Seafarer launch dinner in New York. Concept to delivery by 24stills."
+      "seoDescription": "A brand documentary for TAG Heuer and Hodinkee, filmed at the Carrera Chronograph Seafarer launch dinner in New York. Concept to delivery by 24stills.",
+      "film": "https://cdn.prod.website-files.com/6a4e8971956394aae821fd02/6aa29f1be038bbdcdba689ff_film-one-night-in-nyc.mp4",
+      "filmDuration": "PT2M1S"
     },
     {
       "slug": "leadership-strategies",
@@ -245,14 +249,68 @@
       "gallery": [],
       "seoTitle": "The Handcrafted Art of Signs — Van Zee Signs | 24stills",
       "seoDescription": "A 24stills Original on Van Zee Signs — a Brooklyn sign painter and the hand-lettered trade he keeps alive."
+    },
+    {
+      "slug": "eurospine-2025",
+      "order": 10,
+      "featured": false,
+      "name": "EUROSPINE 2025",
+      "brand": "EUROSPINE",
+      "client": "EUROSPINE",
+      "format": "Event Film",
+      "year": "2025",
+      "location": "",
+      "services": [
+        "Event Coverage",
+        "Production",
+        "Post-Production"
+      ],
+      "mediaType": "video",
+      "media": "assets/video/preview-eurospine.mp4",
+      "poster": "assets/img/thumb-eurospine.jpg",
+      "hoverLoop": "assets/video/loop-eurospine.mp4",
+      "film": "https://cdn.prod.website-files.com/6a4e8971956394aae821fd02/6aa29f93fc29e075cce4be18_film-eurospine-2025.mp4",
+      "filmDuration": "PT53S",
+      "youtube": null,
+      "shortDescription": "An aftermovie from the EUROSPINE 2025 meeting — the halls, the stands, and the people who filled them.",
+      "description": "EUROSPINE gathered its 2025 meeting under the line “EUROSPINE Empowered”. We covered the days as they ran — the exhibition floor filling up, delegates moving between stands and sessions, and the conversations in between that are the real reason people travel to a congress.",
+      "gallery": [],
+      "seoTitle": "EUROSPINE 2025 — Congress Aftermovie | 24stills",
+      "seoDescription": "An event aftermovie from the EUROSPINE 2025 meeting — exhibition floor, delegates and the conversations between sessions. Filmed and edited by 24stills."
+    },
+    {
+      "slug": "step-usa",
+      "order": 11,
+      "featured": false,
+      "name": "STEP USA",
+      "brand": "GACC",
+      "client": "GACC",
+      "format": "Corporate Documentary",
+      "year": "",
+      "location": "",
+      "services": [
+        "Interviews",
+        "Event Coverage",
+        "Post-Production"
+      ],
+      "mediaType": "video",
+      "media": "assets/video/preview-gacc.mp4",
+      "poster": "assets/img/thumb-gacc.jpg",
+      "hoverLoop": "assets/video/loop-gacc.mp4",
+      "film": "https://cdn.prod.website-files.com/6a4e8971956394aae821fd02/6aa29f1ace180afac3b34263_film-gacc-step-usa.mp4",
+      "filmDuration": "PT1M39S",
+      "youtube": null,
+      "shortDescription": "Organizers and participants on what STEP USA gives a company landing in the American market.",
+      "description": "A programme film for GACC’s STEP USA, built on the people inside it — organizers and participants talking through what the programme actually does — cut against the receptions and sessions where those introductions get made.",
+      "gallery": [],
+      "seoTitle": "STEP USA — GACC Programme Film | 24stills",
+      "seoDescription": "A programme film for GACC’s STEP USA, built on interviews with organizers and participants alongside the events where the connections happen. By 24stills."
     }
   ],
   "pendingProjects": {
-    "$comment": "Films confirmed present in the client Drive (ASSETS/VIDEO Projects) but not yet fetched — Google rate-limited the transfer. Add full entries once the files are pulled.",
+    "$comment": "Films confirmed present in the client Drive (ASSETS/VIDEO Projects) but not yet supplied. GACC STEP USA and EUROSPINE 2025 arrived on 2026-09-10 and are now full projects.",
     "readyInDrive": [
-      "GACC STEP USA_V4",
       "GISNY - Imagespot_V1",
-      "EUROSPINE 2025 - Aftermovie_V1",
       "One HXM Spot_V3",
       "Pace Of NYC_V2"
     ],

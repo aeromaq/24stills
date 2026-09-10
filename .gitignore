@@ -7,3 +7,6 @@ Thumbs.db
 additional assets/
 screenshot-1.png
 wedding-assets/
+
+# Client masters — 2.2GB of camera files; web cuts are uploaded to the Webflow CDN
+24still-videos/
