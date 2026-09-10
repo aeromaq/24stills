@@ -133,12 +133,16 @@ is a one-line addition to `data/projects.json` once the file arrives:
   the Work order, no film or thumbnail supplied. Tracked in `pendingProjects`.
 - **Process Harmonization** — client asked for `Successstory Hübner.jpg`; not in the folder,
   so the existing thumbnail stands.
-- **Weddings hero** — client asked for `Thumbnail Julia + Brian`; not supplied, so their own
-  stated alternative (Melanie + Philipp) is used. The films raster uses the three wedding
-  stills that exist; swap in real film links when the wedding films are delivered.
+- **TAG Heuer film** — the client chose `After movie Tag Heuer_V1`; that file has not been
+  pulled from Drive yet, so `preview-tagheuer.mp4` is still the original supplied cut.
+- **Van Zee Signs** — copy is written from what the supplied thumbnail shows (Brooklyn shop,
+  hand-lettered work, the 24stills ORIGINAL badge). `year` is unknown and left empty; Ben
+  should confirm both.
 - **Missing client logos** — Hodinkee, University of Vienna, Vienna Tourism, EMPLEOX and
   All For One are rendered as wordmarks (matching the existing Tag Heuer / DZ Bank / Horváth
   treatment) because no logo files were supplied.
 - **Klaus / Bernhard roles** are assumed — confirm titles.
 - **"Undairy the Craving"** — deck says "GRAVING"; assumed typo, confirm.
 - Wedding form posts via `mailto:` — wire to a form backend (Formspree/Netlify/etc.).
+- **Asya + Zack** is the one wedding tile with stills but no film; it renders as a static
+  figure rather than a player until a film is delivered.
