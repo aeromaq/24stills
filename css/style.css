@@ -2398,7 +2398,7 @@ textarea:focus-visible {
 [data-wfd="fields"] { display: none; }
 
 /* Wedding films play in place — they have no detail page to navigate to. */
-.wed-film { cursor: pointer; padding: 0; border: 0; }
+[data-film] { cursor: pointer; padding: 0; border: 0; }
 
 .wed-film__video {
   position: absolute;
@@ -2412,5 +2412,7 @@ textarea:focus-visible {
 }
 
 /* once playing, the label and scrim would sit over the controls */
-.wed-film.is-playing::after { opacity: 0; }
-.wed-film.is-playing .mosaic__label { display: none; }
+[data-film].is-playing::after { opacity: 0; }
+[data-film].is-playing .mosaic__label,
+[data-film].is-playing [data-wed="kicker"],
+[data-film].is-playing [data-wed="name"] { display: none; }

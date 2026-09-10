@@ -1086,7 +1086,22 @@ function initWebflowDetailFilm() {
    loops come free from initWorkCards, which already treats .mosaic__item.
    ------------------------------------------------------------ */
 function initWeddingFilms() {
-  document.querySelectorAll(".wed-film").forEach((tile) => {
+  /* Matched on the attribute, not a class: the Webflow page can set custom
+     attributes on a tile but cannot apply `wed-film`, which isn't a registered
+     Webflow style. One selector then drives both builds. */
+  document.querySelectorAll("[data-film]").forEach((tile) => {
+    /* Webflow tiles carry only attributes, so build their hover loop here
+       rather than hand-placing a <video> in the Designer. */
+    const media0 = tile.querySelector(".mosaic__media, [data-wed='media']") || tile;
+    if (tile.dataset.loop && !tile.querySelector("video")) {
+      const loop = document.createElement("video");
+      loop.muted = true; loop.loop = true; loop.playsInline = true;
+      loop.preload = "none"; loop.src = tile.dataset.loop;
+      loop.setAttribute("aria-hidden", "true");
+      loop.tabIndex = -1;
+      media0.appendChild(loop);
+      tile.classList.add("has-film");
+    }
     tile.addEventListener("click", () => {
       if (tile.classList.contains("is-playing")) return;
       const media = tile.querySelector(".mosaic__media");
