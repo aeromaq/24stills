@@ -1086,27 +1086,35 @@ function initWebflowDetailFilm() {
    loops come free from initWorkCards, which already treats .mosaic__item.
    ------------------------------------------------------------ */
 function initWeddingFilms() {
+  const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
   /* Matched on the attribute, not a class: the Webflow page can set custom
      attributes on a tile but cannot apply `wed-film`, which isn't a registered
      Webflow style. One selector then drives both builds. */
   document.querySelectorAll("[data-film]").forEach((tile) => {
-    /* Webflow tiles carry only attributes, so build their hover loop here
-       rather than hand-placing a <video> in the Designer. */
-    const media0 = tile.querySelector(".mosaic__media, [data-wed='media']") || tile;
-    if (tile.dataset.loop && !tile.querySelector("video")) {
+    /* The hand-built page wraps the still in `.mosaic__media`; a Webflow tile
+       has no such class, so fall back to the tile itself. Both the hover loop
+       and the click-to-play player go into whichever one we resolve here —
+       resolving it twice is how the Webflow click silently did nothing. */
+    const media = tile.querySelector(".mosaic__media, [data-wed='media']") || tile;
+    /* No hover state on touch, so the loop would never play and `preload=none`
+       would leave a dead <video> behind — skip it there and let the still
+       stand, exactly as initWorkCards() does for the mosaic. */
+    if (canHover && tile.dataset.loop && !tile.querySelector("video")) {
       const loop = document.createElement("video");
+      loop.className = "wed-film__loop";
       loop.muted = true; loop.loop = true; loop.playsInline = true;
       loop.preload = "none"; loop.src = tile.dataset.loop;
       loop.setAttribute("aria-hidden", "true");
       loop.tabIndex = -1;
-      media0.appendChild(loop);
+      media.appendChild(loop);
       tile.classList.add("has-film");
+      tile.addEventListener("mouseenter", () => loop.play().catch(() => {}));
+      tile.addEventListener("mouseleave", () => { loop.pause(); loop.currentTime = 0; });
     }
     tile.addEventListener("click", () => {
       if (tile.classList.contains("is-playing")) return;
-      const media = tile.querySelector(".mosaic__media");
       const poster = tile.querySelector("img");
-      if (!media) return;
 
       const video = document.createElement("video");
       video.className = "wed-film__video";

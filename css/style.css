@@ -2398,7 +2398,26 @@ textarea:focus-visible {
 [data-wfd="fields"] { display: none; }
 
 /* Wedding films play in place — they have no detail page to navigate to. */
-[data-film] { cursor: pointer; padding: 0; border: 0; }
+[data-film] { position: relative; cursor: pointer; padding: 0; border: 0; }
+
+/* The hover loop the script injects into a Webflow tile. The hand-built page
+   authors its loops inside `.mosaic__media`, where the mosaic rules already
+   cover them; a Webflow tile has no such wrapper, so the injected <video>
+   would otherwise render at its intrinsic 300x150 below the still. */
+.wed-film__loop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+[data-film]:hover .wed-film__loop,
+[data-film]:focus-visible .wed-film__loop { opacity: 1; }
+[data-film].is-playing .wed-film__loop { display: none; }
 
 .wed-film__video {
   position: absolute;
