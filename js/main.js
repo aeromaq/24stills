@@ -1029,13 +1029,17 @@ function initWebflowDetailFilm() {
     return el ? el.textContent.trim() : "";
   };
 
-  const src = read("media");
+  /* `film` is the full piece; `media` is only the short cut that plays under
+     the cursor on a card. Prefer the film, and fall back to the cut for
+     projects whose full film has not been delivered yet. */
+  const src = read("film") || read("media");
   const youtube = read("youtube");
   const title = read("title") || "this project";
   /* Media type is authoritative when set; fall back to the file extension so a
      project is never mis-rendered just because the option was left blank. */
   const declared = read("mediaType").toLowerCase();
-  const isVideo = declared === "video" || (!declared && /\.(mp4|webm|mov)(\?|$)/i.test(src));
+  const isVideo =
+    !!read("film") || declared === "video" || (!declared && /\.(mp4|webm|mov)(\?|$)/i.test(src));
 
   if (!youtube && !isVideo) return; // stills-only project: the hero carries it
 

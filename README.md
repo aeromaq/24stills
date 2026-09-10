@@ -41,8 +41,23 @@ CMS collection (see `WEBFLOW-BUILD.md` §5).
 ### Project schema
 
 `slug` `order` `featured` `name` `brand` `client` `format` `year` `location`
-`services[]` `mediaType` (`video`|`image`) `media` `poster` `hoverLoop` `youtube`
-`shortDescription` `description` `gallery[]` `seoTitle` `seoDescription`
+`services[]` `mediaType` (`video`|`image`) `media` `poster` `hoverLoop` `film`
+`filmDuration` `youtube` `shortDescription` `description` `gallery[]` `seoTitle`
+`seoDescription`
+
+**`film` vs `media` — the distinction matters.** `film` is the full piece and is what
+a detail page plays. `media` is only the short cut that plays under the cursor on a
+card and in the card overlay. A detail page falls back to `media` when `film` is unset,
+so a project whose master has not arrived still shows something.
+
+`film` holds an absolute URL because the full films are **hosted on the Webflow CDN,
+not in this repo**: jsDelivr refuses to serve GitHub files over 20 MB, and Webflow's
+asset upload caps at **30 MB per file** (`content-length-range 0, 31457280`). That
+ceiling is what sets the encode targets — see **Assets**. `rel()` and `abs()` in
+`tools/build.js` pass absolute URLs through untouched.
+
+`filmDuration` is an ISO 8601 duration (`PT3M35S`) and is emitted into the `VideoObject`.
+Leave it unset rather than guessing.
 
 `youtube` takes a bare video id; when set, the detail page embeds YouTube instead of
 the self-hosted file (the client asked whether YouTube pieces could live in the mosaic —
@@ -109,8 +124,22 @@ Client masters live outside the repo. Web encodes here:
 
 - `assets/video/hero-loop.mp4` — Showreel 2026 v12, 1600×900, ~4 MB (client-supplied master
   is 106 MB; transcoded with ffmpeg, audio stripped since the hero plays muted)
-- hover loops ~150 KB · detail-page films ~2 MB (24 s cuts)
+- hover loops ~150 KB (6 s, silent, 640 px) · card-overlay cuts ~2 MB (24 s, 1280 px)
 - Stills resized to ≤1920px, quality 82–84
+- **Full films** are two-pass encoded to land just under Webflow's 30 MB asset cap and
+  uploaded there, not committed. Pick the height from the runtime so the bitrate stays
+  sane — 1080p while it holds up, 720p once the target drops near 1 Mbps:
+
+  | Film | Runtime | Height | Result |
+  |---|---|---|---|
+  | EUROSPINE 2025 | 0:53 | 1080p | 28.7 MB |
+  | STEP USA (GACC) | 1:39 | 1080p | 28.5 MB |
+  | One Night in NYC | 2:01 | 1080p | 28.5 MB |
+  | 50 Years DZ Bank | 3:35 | **720p** | 28.7 MB |
+
+  DZ Bank is the one that suffers — 3:35 inside 30 MB is ~1 Mbps. If quality matters
+  more than self-hosting, put it on YouTube and set `youtube`; the detail page already
+  prefers a YouTube facade over a self-hosted file.
 
 ## Run locally
 
@@ -129,12 +158,14 @@ is a one-line addition to `data/projects.json` once the file arrives:
 - **DZ Bank: A Summit for 50 Years** — the `DZ Bank Event video` folder is empty; only the
   thumbnail was supplied. The project exists and uses the thumbnail; add `media` +
   `mediaType: "video"` when the film lands.
-- **GACC, GISNY, EUROSPINE 2025, ONE HXM, PACE OF NY, MORE TIME FOR PEOPLE** — requested for
-  the Work order, no film or thumbnail supplied. Tracked in `pendingProjects`.
+- **GISNY, ONE HXM, PACE OF NY, MORE TIME FOR PEOPLE** — requested for the Work order,
+  no film supplied yet. Tracked in `pendingProjects`. (GACC and EUROSPINE 2025 arrived
+  on 2026-09-10 and are now full projects.)
+- **EUROSPINE 2025 / STEP USA copy** is written from what the footage shows, and their
+  posters are frames pulled from the films. Ben should confirm the wording, and supply
+  STEP USA's year and both locations — left empty rather than guessed.
 - **Process Harmonization** — client asked for `Successstory Hübner.jpg`; not in the folder,
   so the existing thumbnail stands.
-- **TAG Heuer film** — the client chose `After movie Tag Heuer_V1`; that file has not been
-  pulled from Drive yet, so `preview-tagheuer.mp4` is still the original supplied cut.
 - **Van Zee Signs** — copy is written from what the supplied thumbnail shows (Brooklyn shop,
   hand-lettered work, the 24stills ORIGINAL badge). `year` is unknown and left empty; Ben
   should confirm both.
