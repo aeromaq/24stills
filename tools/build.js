@@ -103,8 +103,9 @@ ${NAV_SCRIPT}
   <meta name="twitter:title" content="${esc(title)}" />
   <meta name="twitter:description" content="${esc(description)}" />
   <meta name="twitter:image" content="${esc(ogImage)}" />
-  <link rel="icon" type="image/png" href="${rel("assets/logos/24stills-submark.png", depth)}" />
-  <link rel="apple-touch-icon" href="${rel("assets/logos/24stills-submark.png", depth)}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="${rel("assets/logos/favicon-light-32.png", depth)}" data-favicon />
+  <link rel="icon" type="image/png" sizes="16x16" href="${rel("assets/logos/favicon-light-16.png", depth)}" data-favicon />
+  <link rel="apple-touch-icon" href="${rel("assets/logos/favicon-light-180.png", depth)}" data-favicon />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
