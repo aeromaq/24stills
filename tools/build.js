@@ -32,10 +32,16 @@ const esc = (s) =>
     .replace(/"/g, "&quot;");
 
 /** Absolute site URL for a repo-relative path. */
-const abs = (p) => site.origin.replace(/\/$/, "") + "/" + String(p).replace(/^\//, "");
+/** True for anything already addressable on its own — an off-site asset. */
+const isAbsolute = (p) => /^(https?:)?\/\//.test(String(p));
 
-/** Prefix a repo-root-relative asset path for a page nested `depth` levels deep. */
-const rel = (p, depth) => (depth ? "../".repeat(depth) : "") + p;
+const abs = (p) =>
+  isAbsolute(p) ? String(p) : site.origin.replace(/\/$/, "") + "/" + String(p).replace(/^\//, "");
+
+/** Prefix a repo-root-relative asset path for a page nested `depth` levels deep.
+    Full films are hosted off-site (see `film` in the schema), so an absolute URL
+    has to survive this untouched — prefixing it with `../` is how it would break. */
+const rel = (p, depth) => (isAbsolute(p) ? String(p) : (depth ? "../".repeat(depth) : "") + p);
 
 const projectUrl = (p, depth) => rel(`work/${p.slug}/`, depth);
 
@@ -97,8 +103,9 @@ ${NAV_SCRIPT}
   <meta name="twitter:title" content="${esc(title)}" />
   <meta name="twitter:description" content="${esc(description)}" />
   <meta name="twitter:image" content="${esc(ogImage)}" />
-  <link rel="icon" type="image/png" href="${rel("assets/logos/24stills-submark.png", depth)}" />
-  <link rel="apple-touch-icon" href="${rel("assets/logos/24stills-submark.png", depth)}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="${rel("assets/logos/favicon-light-32.png", depth)}" data-favicon />
+  <link rel="icon" type="image/png" sizes="16x16" href="${rel("assets/logos/favicon-light-16.png", depth)}" data-favicon />
+  <link rel="apple-touch-icon" href="${rel("assets/logos/favicon-light-180.png", depth)}" data-favicon />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -247,10 +254,15 @@ function filmBlock(p, depth) {
         </div>
       </section>`;
   }
-  if (p.mediaType === "video") {
+  /* `film` is the full piece; `media` is only the short cut that plays under the
+     cursor on a card. A detail page that served `media` was showing visitors a
+     24-second teaser where they had asked for the film — so prefer `film`, and
+     fall back to `media` only for projects whose full film has not landed yet. */
+  const source = p.film || (p.mediaType === "video" ? p.media : null);
+  if (source) {
     return `      <section class="section detail-film">
         <div class="detail-film__frame">
-          <video class="detail-film__video" src="${rel(p.media, depth)}" poster="${rel(p.poster, depth)}"
+          <video class="detail-film__video" src="${rel(source, depth)}" poster="${rel(p.poster, depth)}"
                  preload="none" playsinline controls
                  aria-label="${esc(p.name)} — film by 24stills"></video>
           <button class="detail-film__play" type="button" aria-label="Play ${esc(p.name)}">
@@ -270,7 +282,7 @@ function detailPage(p, i) {
   const related = projects.filter((x) => x.slug !== p.slug && x.client !== p.client).slice(0, 3);
   const canonical = abs(`work/${p.slug}/`);
   const ogImage = abs(p.poster);
-  const hasFilm = p.mediaType === "video" || !!p.youtube;
+  const hasFilm = !!p.film || p.mediaType === "video" || !!p.youtube;
 
   const breadcrumb = {
     "@context": "https://schema.org",
@@ -291,8 +303,11 @@ function detailPage(p, i) {
         name: p.name,
         description: p.shortDescription,
         thumbnailUrl: ogImage,
-        contentUrl: p.youtube ? `https://www.youtube.com/watch?v=${p.youtube}` : abs(p.media),
+        contentUrl: p.youtube ? `https://www.youtube.com/watch?v=${p.youtube}` : abs(p.film || p.media),
         url: canonical,
+        /* Only emitted where the film's real runtime is known — still no
+           invented values, but the data now supports it where it does. */
+        ...(p.filmDuration ? { duration: p.filmDuration } : {}),
         genre: p.format,
         productionCompany: { "@type": "Organization", name: site.legalName, url: site.origin },
         about: { "@type": "Organization", name: p.client },

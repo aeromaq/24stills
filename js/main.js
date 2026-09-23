@@ -1029,13 +1029,17 @@ function initWebflowDetailFilm() {
     return el ? el.textContent.trim() : "";
   };
 
-  const src = read("media");
+  /* `film` is the full piece; `media` is only the short cut that plays under
+     the cursor on a card. Prefer the film, and fall back to the cut for
+     projects whose full film has not been delivered yet. */
+  const src = read("film") || read("media");
   const youtube = read("youtube");
   const title = read("title") || "this project";
   /* Media type is authoritative when set; fall back to the file extension so a
      project is never mis-rendered just because the option was left blank. */
   const declared = read("mediaType").toLowerCase();
-  const isVideo = declared === "video" || (!declared && /\.(mp4|webm|mov)(\?|$)/i.test(src));
+  const isVideo =
+    !!read("film") || declared === "video" || (!declared && /\.(mp4|webm|mov)(\?|$)/i.test(src));
 
   if (!youtube && !isVideo) return; // stills-only project: the hero carries it
 
@@ -1130,6 +1134,44 @@ function initWeddingFilms() {
       video.play().catch(() => {});
     });
   });
+}
+
+/* ------------------------------------------------------------
+   FAVICON — dark mark on a light UI, light mark on a dark one.
+
+   Done in JS rather than `<link media="(prefers-color-scheme: dark)">`
+   because Chrome ignores `media` on an icon link; only Firefox and Safari
+   honour it. Swapping here works everywhere and, unlike the declarative
+   form, also follows the visitor flipping their theme mid-session.
+
+   Every icon link is marked `data-favicon` and named `favicon-<scheme>-<px>`,
+   so the swap is a filename substitution and the same code serves both the
+   static build (relative paths) and Webflow (absolute CDN URLs).
+   ------------------------------------------------------------ */
+function initFavicon() {
+  let links = [...document.querySelectorAll("link[data-favicon]")];
+  if (!links.length) return;
+
+  const query = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const apply = () => {
+    const scheme = query.matches ? "dark" : "light";
+    links = links.map((link) => {
+      const href = link.getAttribute("href") || "";
+      const next = href.replace(/favicon-(?:light|dark)-/, `favicon-${scheme}-`);
+      if (next === href) return link;
+      /* Replace the node instead of mutating href: Chrome caches an icon
+         against the element and will happily keep painting the old one. */
+      const fresh = link.cloneNode(false);
+      fresh.setAttribute("href", next);
+      link.replaceWith(fresh);
+      return fresh;
+    });
+  };
+
+  apply();
+  if (query.addEventListener) query.addEventListener("change", apply);
+  else if (query.addListener) query.addListener(apply); // Safari < 14
 }
 
 /* ------------------------------------------------------------
@@ -1252,6 +1294,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initWorkCards();
   initHeroVideo();
   initDetailFilm();
+  initFavicon();
   initWebflowDetailFilm();
   initWeddingFilms();
   initLegacyOverlay();
